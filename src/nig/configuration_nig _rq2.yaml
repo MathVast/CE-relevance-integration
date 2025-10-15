@@ -1,0 +1,97 @@
+id: NIG study (RQ1)
+description: Test the attribution of MiniLM on various datasets using InfoNCE
+
+gpu: true
+base_hf_id: cross-encoder/ms-marco-MiniLM-L12-v2
+
+attribution:
+  dataset_specs: [
+    {"name": "irds.msmarco-passage.trec-dl-2019.judged", "relevance_levels": [2,3], "max_samples": 1000},
+    {"name": "irds.msmarco-passage.trec-dl-2020.judged", "relevance_levels": [2,3], "max_samples": 1000},
+    {"name": "irds.msmarco-passage-v2.trec-dl-2021.judged", "relevance_levels": [2,3], "max_samples": 1000},
+    {"name": "irds.msmarco-passage-v2.trec-dl-2022.judged", "relevance_levels": [2,3], "max_samples": 1000},
+    {"name": "irds.beir.fiqa.test", "relevance_levels": [1], "max_samples": 1000},
+    {"name": "irds.beir.trec-covid", "relevance_levels": [2], "max_samples": 1000},
+    {"name": "irds.beir.nfcorpus.test", "relevance_levels": [2], "max_samples": 1000},
+    {"name": "irds.disks45.nocr.trec-robust-2004", "relevance_levels": [1,2], "max_samples": 1000},
+    {"name": "irds.dpr-w100.natural-questions.dev", "relevance_levels": [2], "max_samples": 1000},
+    {"name": "irds.beir.bioasq.test", "relevance_levels": [1], "max_samples": 1000},
+    ]
+  checkpoint_interval: 100
+  steps: 100
+  batch_size: 1
+  compute_error: true
+  adaptive_sampling: true
+  max_input_length: 128
+  requirements: duration=2 days & cuda(mem=24G) & cpu(cores=8)
+
+aggregation:
+  aggregate: true
+
+ablation:
+  ablation_specs: [
+    {intersection: {"name": "msmarco_intersection", "source_datasets": [
+      {"name" : "irds.msmarco-passage.trec-dl-2019.judged", "relevance_level": 1},
+      {"name" : "irds.msmarco-passage.trec-dl-2020.judged", "relevance_level": 1},
+      {"name" : "irds.msmarco-passage-v2.trec-dl-2021.judged", "relevance_level": 1},
+      {"name" : "irds.msmarco-passage-v2.trec-dl-2022.judged", "relevance_level": 1},
+      
+    ]}
+    },
+    {merge: {"name": "msmarco_fusion", "source_datasets": [
+      {"name" : "irds.msmarco-passage.trec-dl-2019.judged", "relevance_level": 1},
+      {"name" : "irds.msmarco-passage.trec-dl-2020.judged", "relevance_level": 1},
+      {"name" : "irds.msmarco-passage-v2.trec-dl-2021.judged", "relevance_level": 1},
+      {"name" : "irds.msmarco-passage-v2.trec-dl-2022.judged", "relevance_level": 1},
+      
+    ]}
+    },
+    {intersection: {"name": "OOD_intersection", "source_datasets": [
+      {"name": "irds.beir.fiqa.test","relevance_level": 1}, 
+      {"name": "irds.beir.trec-covid","relevance_level": 1}, 
+      {"name": "irds.beir.nfcorpus.test","relevance_level": 1},
+      {"name": "irds.disks45.nocr.trec-robust-2004","relevance_level": 1},
+      {"name": "irds.dpr-w100.natural-questions.dev","relevance_level": 1},
+      {"name": "irds.beir.bioasq.test","relevance_level": 1}
+      ]}
+    },
+    {intersection: {"name": "ALL_intersection", "source_datasets": [
+      {"name" : "irds.msmarco-passage.trec-dl-2019.judged", "relevance_level": 1},
+      {"name" : "irds.msmarco-passage.trec-dl-2020.judged", "relevance_level": 1},
+      {"name" : "irds.msmarco-passage-v2.trec-dl-2021.judged", "relevance_level": 1},
+      {"name" : "irds.msmarco-passage-v2.trec-dl-2022.judged", "relevance_level": 1},
+      {"name": "irds.beir.fiqa.test","relevance_level": 1}, 
+      {"name": "irds.beir.trec-covid","relevance_level": 1}, 
+      {"name": "irds.beir.nfcorpus.test","relevance_level": 1},
+      {"name": "irds.disks45.nocr.trec-robust-2004","relevance_level": 1},
+      {"name": "irds.dpr-w100.natural-questions.dev","relevance_level": 1},
+      {"name": "irds.beir.bioasq.test","relevance_level": 1}
+      ]}
+    },
+    {merge: {"name": "OOD_fusion", "source_datasets": [
+      {"name": "irds.beir.fiqa.test","relevance_level": 1}, 
+      {"name": "irds.beir.trec-covid","relevance_level": 1}, 
+      {"name": "irds.beir.nfcorpus.test","relevance_level": 1},
+      {"name": "irds.disks45.nocr.trec-robust-2004","relevance_level": 1},
+      {"name": "irds.dpr-w100.natural-questions.dev","relevance_level": 1},
+      {"name": "irds.beir.bioasq.test","relevance_level": 1}
+      ]}
+    },
+    {merge: {"name": "ALL_fusion", "source_datasets": [
+      {"name" : "irds.msmarco-passage.trec-dl-2019.judged", "relevance_level": 1},
+      {"name" : "irds.msmarco-passage.trec-dl-2020.judged", "relevance_level": 1},
+      {"name" : "irds.msmarco-passage-v2.trec-dl-2021.judged", "relevance_level": 1},
+      {"name" : "irds.msmarco-passage-v2.trec-dl-2022.judged", "relevance_level": 1},
+      {"name": "irds.beir.fiqa.test","relevance_level": 1}, 
+      {"name": "irds.beir.trec-covid","relevance_level": 1}, 
+      {"name": "irds.beir.nfcorpus.test","relevance_level": 1},
+      {"name": "irds.disks45.nocr.trec-robust-2004","relevance_level": 1},
+      {"name": "irds.dpr-w100.natural-questions.dev","relevance_level": 1},
+      {"name": "irds.beir.bioasq.test","relevance_level": 1}
+      ]}
+    },
+  ]
+
+  target_modules_regex: ["intermediate", "attention_probs"]
+  pruning_percentages: [0.001, 0.005, 0.01]
+  requirements: duration=2h & cpu(cores=8)

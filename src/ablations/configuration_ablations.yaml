@@ -1,0 +1,30 @@
+id: ablation_studies
+description: Configuration to control the ablation's experiments.
+
+gpu: true
+ranker_id: cross-encoder/ms-marco-MiniLM-L12-v2
+
+post_processing: 
+  requirements: "duration=8h & cuda(mem=12G)"
+
+list_of_datasets: [
+  "irds.msmarco-passage.trec-dl-2019.judged",
+  "irds.msmarco-passage.trec-dl-2020.judged",
+  "irds.msmarco-passage-v2.trec-dl-2021.judged",
+  "irds.msmarco-passage-v2.trec-dl-2022.judged",
+  "irds.beir.fiqa.test", 
+  "irds.beir.trec-covid",
+  "irds.beir.nfcorpus.test", 
+  "irds.disks45.nocr.trec-robust-2004", 
+  "irds.dpr-w100.natural-questions.dev", 
+  "irds.beir.bioasq.test", 
+]
+start_layer: 0
+end_layer: 24
+max_seq_length: 128
+top_k: 100
+max_queries_per_dataset: 1000
+ablation_requirements: "duration=1 days & cuda(mem=12G)"
+
+
+

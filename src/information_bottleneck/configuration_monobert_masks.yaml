@@ -1,0 +1,52 @@
+id: mask_learning
+description: Configuration to control the mask learning experiment.
+
+gpu: true
+ranker_id: castorini/monobert-large-msmarco
+
+post_processing: 
+  requirements: "duration=8h & cuda(mem=12G)"
+
+preprocessing_requirements: duration=6h & cpu(cores=8)
+indexation_requirements: duration=6h & cpu(cores=8)
+learner:
+  validation_interval: 10
+  checkpoint_interval: 10
+  checkpoint_listener_interval: 10
+  sparsity_listener_interval: 10
+  optimization:
+      steps_per_epoch: 100
+      batch_size: 128
+      max_epochs: 100
+      weight_decay: 0.01
+      eps: 1.0e-6
+      re_no_l2_regularization: []
+      scheduler: false
+  requirements: duration=20h & cuda(mem=24G)
+
+start_layer: 0
+end_layer: 24
+max_seq_len: 128
+
+validation:
+  # Use 100 topics for validation
+  size: 100
+
+retrieval:
+  requirements: duration=12h & cuda(mem=24G) * 2
+  k: 100
+
+test_datasets: [
+  "irds.msmarco-passage.trec-dl-2019.judged",
+  "irds.msmarco-passage.trec-dl-2020.judged",
+  "irds.msmarco-passage-v2.trec-dl-2021.judged",
+  "irds.msmarco-passage-v2.trec-dl-2022.judged",
+  "irds.beir.fiqa.test", 
+  "irds.beir.trec-covid",
+  "irds.beir.nfcorpus.test", 
+  "irds.disks45.nocr.trec-robust-2004", 
+  "irds.dpr-w100.natural-questions.dev", 
+  "irds.beir.bioasq.test", 
+]
+suffix: "monobert_masks.pth"
+test_requirements: "duration=24h & cuda(mem=24G)"
