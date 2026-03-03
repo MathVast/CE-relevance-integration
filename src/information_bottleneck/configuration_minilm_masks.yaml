@@ -1,6 +1,8 @@
 id: mask_learning
 description: Configuration to control the mask learning experiment.
 
+module: information_bottleneck.train
+
 gpu: true
 ranker_id: cross-encoder/ms-marco-MiniLM-L12-v2 
 

@@ -1,6 +1,8 @@
 id: ablation_studies
 description: Configuration to control the ablation's experiments.
 
+module: ablations.main
+
 gpu: true
 ranker_id: cross-encoder/ms-marco-MiniLM-L12-v2
 
