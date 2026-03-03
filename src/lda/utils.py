@@ -6,7 +6,7 @@ from datamaestro_text.data.ir import TextItem
 from dataclasses import dataclass
 import numpy as np
 from transformers import AutoTokenizer
-from src.utils import get_token_types_spans
+from utils import get_token_types_spans
 from xpmir.learning.devices import DeviceInformation
 
 import logging

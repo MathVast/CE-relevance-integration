@@ -5,7 +5,7 @@ from xpmir.papers.helpers import (
 from attrs import field
 from transformers import AutoConfig
 from attrs import Factory
-from src.config_utils import GatherMatrices, Postprocessing
+from config_utils import GatherMatrices, Postprocessing
 
 import logging
 logging.basicConfig(level=logging.INFO)

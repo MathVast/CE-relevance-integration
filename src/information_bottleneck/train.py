@@ -1,6 +1,6 @@
 from xpmir.experiments.ir import PaperResults, ir_experiment, IRExperimentHelper
-from src.information_bottleneck.config import MaskLearning
-from src.information_bottleneck.utils import (
+from information_bottleneck.config import MaskLearning
+from information_bottleneck.utils import (
     DistillationPairwiseTrainerWithSparsification, 
     GumbelSigmoidMaskingStrategy, 
     GumbelSoftmaxMaskingStrategy, 
@@ -16,7 +16,7 @@ from xpmir.learning.optim import AdamW, ParameterOptimizer
 from xpmir.learning.schedulers import LinearWithWarmup
 from experimaestro import tag
 from experimaestro.launcherfinder import find_launcher
-from src.utils import INPUT_PART_TO_POSITION
+from utils import INPUT_PART_TO_POSITION
 
 ## Imports for the optimization: ##
 from xpmir.papers.helpers.samplers import (

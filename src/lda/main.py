@@ -1,8 +1,8 @@
 from xpmir.experiments.ir import PaperResults, ir_experiment, IRExperimentHelper
-from src.lda.config import LDAStudy
-from src.lda.generate_data import gather_matrices
-from src.lda.collect_directions import CollectDirections
-from src.lda.classification import ComputeClassification, AggregateClassificationResults
+from lda.config import LDAStudy
+from lda.generate_data import gather_matrices
+from lda.collect_directions import CollectDirections
+from lda.classification import ComputeClassification, AggregateClassificationResults
 from experimaestro.launcherfinder import find_launcher
 
 import logging

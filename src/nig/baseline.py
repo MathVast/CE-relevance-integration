@@ -5,7 +5,7 @@ from experimaestro import Config
 import torch
 from transformers import AutoTokenizer
 import numpy as np
-from src.utils import split_list_by_values
+from utils import split_list_by_values
 
 
 class Baseline(Config):

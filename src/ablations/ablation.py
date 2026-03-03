@@ -1,5 +1,5 @@
 from .utils import AblationOutput, PrunedModelForCrossScorer, get_relevance_levels
-from src.utils import get_token_types_spans, INPUT_PART_TO_POSITION
+from utils import get_token_types_spans, INPUT_PART_TO_POSITION
 
 import os
 import json

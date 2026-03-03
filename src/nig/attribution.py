@@ -22,9 +22,9 @@ from xpmir.learning.devices import DEFAULT_DEVICE, Device, DeviceInformation
 from experimaestro import Task, Param, Meta, Annotated
 from experimaestro.generators import pathgenerator
 
-from src.extractors import OutputsExtractorInfoNCE
-from src.nig.baseline import Baseline
-from src.nig.integrated_gradients import (
+from extractors import OutputsExtractorInfoNCE
+from nig.baseline import Baseline
+from nig.integrated_gradients import (
     getAlphaParameters,
     getSlopes_infonce,
     _get_scaled_inputs,
@@ -34,7 +34,7 @@ from src.nig.integrated_gradients import (
 
 import logging
 
-from src.utils import get_interesting_modules, get_token_types_spans
+from utils import get_interesting_modules, get_token_types_spans
 
 logging.basicConfig(level=logging.INFO)
 

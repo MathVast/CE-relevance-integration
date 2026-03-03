@@ -7,9 +7,9 @@ import torch
 from experimaestro import Task, Param, Config, Meta
 from experimaestro.generators import pathgenerator
 
-from src.nig.combinations import adapted_neuron_intersection, adapted_neuron_merging, CombinationAblation
+from nig.combinations import adapted_neuron_intersection, adapted_neuron_merging, CombinationAblation
 
-from src.utils import is_pair_interesting, DATASET_NAME_TO_DOCUMENT_ID
+from utils import is_pair_interesting, DATASET_NAME_TO_DOCUMENT_ID
 
 import logging
 logging.basicConfig(level=logging.INFO)

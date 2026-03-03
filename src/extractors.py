@@ -5,7 +5,7 @@ from xpmir.utils.functools import cache as cache
 
 import logging
 
-from src.utils import untuple
+from utils import untuple
 
 logging.basicConfig(level=logging.INFO)
 

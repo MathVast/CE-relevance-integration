@@ -3,7 +3,7 @@ from scipy.linalg import eigh
 from typing import Dict, List, Union, Annotated
 from dataclasses import dataclass
 from pathlib import Path
-from src.lda.generate_data import AgregateMatricesOutput
+from lda.generate_data import AgregateMatricesOutput
 from experimaestro.generators import pathgenerator
 import numpy as np
 import os

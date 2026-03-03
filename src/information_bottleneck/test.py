@@ -1,8 +1,8 @@
 from xpmir.experiments.ir import PaperResults, ir_experiment, IRExperimentHelper
-from src.information_bottleneck.config import MaskLearning
-from src.information_bottleneck.utils import AdvancedAblationTestFromPath, AgregationAdvancedAblationTests
-from src.utils import generic_dataset
-from src.sampling import TopPassagesSampler
+from information_bottleneck.config import MaskLearning
+from information_bottleneck.utils import AdvancedAblationTestFromPath, AgregationAdvancedAblationTests
+from utils import generic_dataset
+from sampling import TopPassagesSampler
 
 from xpmir.learning.devices import CudaDevice
 from functools import partial

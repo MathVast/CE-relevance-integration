@@ -1,15 +1,15 @@
 from xpmir.experiments.ir import PaperResults, ir_experiment, IRExperimentHelper
-from src.attention.generation import GenerateAttentionPatterns, GenerateAttentionPatternsWeakNegatives
-from src.attention.config import AttentionPatternStudy
-from src.attention.summary import SummarizeAttentionPatterns
+from attention.generation import GenerateAttentionPatterns, GenerateAttentionPatternsWeakNegatives
+from attention.config import AttentionPatternStudy
+from attention.summary import SummarizeAttentionPatterns
 from experimaestro.launcherfinder import find_launcher
 from xpmir.rankers.standard import BM25
 from xpmir.papers.helpers.samplers import ValidationSample
 from functools import partial
 import xpmir.interfaces.anserini as anserini
 
-from src.sampling import DiversePassagesSamplerWithHardNegatives
-from src.utils import generic_dataset
+from sampling import DiversePassagesSamplerWithHardNegatives
+from utils import generic_dataset
 
 import logging
 

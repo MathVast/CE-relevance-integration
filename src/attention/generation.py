@@ -15,8 +15,8 @@ from experimaestro import Task, Param, Meta, Constant
 from experimaestro.generators import pathgenerator
 from xpmir.learning.devices import DEFAULT_DEVICE, Device, DeviceInformation
 from xpmir.letor.samplers import PairwiseSampleDataset
-from src.utils import check_pid_and_qid, get_token_types_spans, untuple
-from src.attention.utils import load_written_ids, write_data_line
+from utils import check_pid_and_qid, get_token_types_spans, untuple
+from attention.utils import load_written_ids, write_data_line
 
 import logging
 

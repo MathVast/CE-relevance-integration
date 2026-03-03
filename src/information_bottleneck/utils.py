@@ -29,8 +29,8 @@ from experimaestro import Task, Param, Config, Meta, Constant, pathgenerator, An
 from datamaestro import prepare_dataset
 from datamaestro_text.data.ir import TextItem, IDItem, PairwiseSampleDataset
 
-from src.utils import untuple, INPUT_PART_TO_POSITION, get_relevance_levels
-from src.ablations.utils import AblationOutput
+from utils import untuple, INPUT_PART_TO_POSITION, get_relevance_levels
+from ablations.utils import AblationOutput
 
 import logging
 

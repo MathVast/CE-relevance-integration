@@ -6,7 +6,7 @@ from xpmir.papers.helpers import (
 from xpmir.papers.helpers.samplers import ValidationSample
 from attrs import Factory, field
 
-from src.config_utils import Indexation, Learner, Postprocessing, Preprocessing, Retrieval
+from config_utils import Indexation, Learner, Postprocessing, Preprocessing, Retrieval
 
 from transformers import AutoConfig
 import logging

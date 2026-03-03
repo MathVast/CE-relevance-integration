@@ -5,7 +5,7 @@ from sklearn.metrics import ndcg_score
 import torch
 from typing import Annotated, Callable, Optional
 
-from src.utils import get_relevance_levels, untuple
+from utils import get_relevance_levels, untuple
 from experimaestro import Task, Param, Config, Meta, Annotated, pathgenerator
 from experimaestro.generators import pathgenerator
 from pathlib import Path

@@ -4,7 +4,7 @@ from enum import Enum
 import numpy as np
 import pickle
 
-from src.utils import is_pair_interesting
+from utils import is_pair_interesting
 
 import logging
 logging.basicConfig(level=logging.INFO)

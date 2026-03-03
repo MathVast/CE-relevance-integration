@@ -4,7 +4,7 @@ from xpmir.papers.helpers import (
     NeuralIRExperiment,
 )
 from attrs import Factory, field
-from src.config_utils import GatherMatrices, Postprocessing
+from config_utils import GatherMatrices, Postprocessing
 from transformers import AutoConfig
 
 import logging

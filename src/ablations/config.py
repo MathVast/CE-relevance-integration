@@ -5,7 +5,7 @@ from xpmir.papers.helpers import (
 )
 from attrs import Factory, field
 
-from src.config_utils import Postprocessing
+from config_utils import Postprocessing
 
 from transformers import AutoConfig
 import logging

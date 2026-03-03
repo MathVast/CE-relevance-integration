@@ -19,10 +19,10 @@ from xpmir.letor.samplers import PairwiseSampleDataset
 from xpmir.rankers.standard import BM25
 from xpmir.papers.helpers.samplers import ValidationSample
 
-from src.sampling import DiversePassagesSamplerWithHardNegatives
-from src.utils import generic_dataset, check_pid_and_qid, get_token_types_spans, get_interesting_modules
-from src.extractors import OutputsExtractorWithResiduals
-from src.lda.config import LDAStudy
+from sampling import DiversePassagesSamplerWithHardNegatives
+from utils import generic_dataset, check_pid_and_qid, get_token_types_spans, get_interesting_modules
+from extractors import OutputsExtractorWithResiduals
+from lda.config import LDAStudy
 import gzip
 import pickle
 from functools import partial

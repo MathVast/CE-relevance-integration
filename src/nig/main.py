@@ -7,12 +7,12 @@ import xpmir.interfaces.anserini as anserini
 from xpmir.rankers.standard import BM25
 from xpmir.papers.helpers.samplers import ValidationSample
 
-from src.nig.attribution import AttributeInfoNCE
-from src.nig.baseline import BaselineMethod, PadEverything, PadQuery, PadQueryAndPassage
-from src.nig.config import NIGExperiment
-from src.sampling import generic_dataset, AttributionInfoNCESampler
-from src.nig.aggregation import AggregationResults
-from src.nig.ablation import AblationSchemes
+from nig.attribution import AttributeInfoNCE
+from nig.baseline import BaselineMethod, PadEverything, PadQuery, PadQueryAndPassage
+from nig.config import NIGExperiment
+from sampling import generic_dataset, AttributionInfoNCESampler
+from nig.aggregation import AggregationResults
+from nig.ablation import AblationSchemes
 
 import logging
 logging.basicConfig(level=logging.INFO)

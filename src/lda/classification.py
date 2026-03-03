@@ -21,10 +21,10 @@ from xpmir.learning.devices import DEFAULT_DEVICE, Device, DeviceInformation
 from experimaestro import Task, Param, Config, Meta, Constant
 from experimaestro.generators import pathgenerator
 
-from src.lda.generate_data import AgregateMatricesOutput
-from src.utils import get_interesting_modules
-from src.extractors import OutputsExtractorWithResiduals
-from src.lda.utils import GetActivationsOutput, iterate_over_pairs_and_store_activations
+from lda.generate_data import AgregateMatricesOutput
+from utils import get_interesting_modules
+from extractors import OutputsExtractorWithResiduals
+from lda.utils import GetActivationsOutput, iterate_over_pairs_and_store_activations
 
 import logging
 

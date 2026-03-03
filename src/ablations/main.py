@@ -1,10 +1,10 @@
 from xpmir.experiments.ir import PaperResults, ir_experiment, IRExperimentHelper
-from src.ablations.config import AblationStudy
-from src.ablations.utils import PerspectiveAblationStudy
-from src.ablations.ablation import AblationAttention
-from src.ablations.summary import SummaryAblationStudies, AgregationAblations
-from src.utils import generic_dataset
-from src.sampling import TopPassagesSampler
+from ablations.config import AblationStudy
+from ablations.utils import PerspectiveAblationStudy
+from ablations.ablation import AblationAttention
+from ablations.summary import SummaryAblationStudies, AgregationAblations
+from utils import generic_dataset
+from sampling import TopPassagesSampler
 
 from datamaestro import prepare_dataset
 from experimaestro.launcherfinder import find_launcher

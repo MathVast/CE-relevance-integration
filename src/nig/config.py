@@ -7,8 +7,8 @@ from xpmir.papers.helpers import (
     NeuralIRExperiment,
 )
 
-from src.config_utils import Indexation, Preprocessing
-from src.nig.baseline import BaselineMethod
+from config_utils import Indexation, Preprocessing
+from nig.baseline import BaselineMethod
 
 @configuration()
 class Attribution:
