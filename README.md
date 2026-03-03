@@ -35,7 +35,7 @@ At the moment, it contains all the code necessary to reproduce the experiments o
 ### Installation
 To install this repository, first ensure you have `git` and `uv` installed.
 
-1.  Clone the repository and its submodules:
+1.  Clone the repository:
     ```bash
     git clone git@github.com:MathVast/CE-relevance-integration.git
     cd CE-relevance-integration
