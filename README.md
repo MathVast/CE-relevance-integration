@@ -11,7 +11,6 @@
 <div>
     <sup>1</sup>Sorbonne Université, CNRS, ISIR, F-75005 Paris, France&emsp;<br>
     <sup>2</sup>ChapsVision, Paris, France&emsp;<br>
-    <sup>3</sup>IRIT, Université de Toulouse, UMR5505 CNRS, F-31400 Toulouse, France&emsp;<br>
 </div>
 <br>
 
