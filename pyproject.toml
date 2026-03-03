@@ -1,34 +1,43 @@
 [project]
 name = "relevance_integration"
 version = "0.0.1"
-requires-python = ">=3.9,<3.12"
+requires-python = ">=3.10,<3.11"
 
 dependencies = [
     "datamaestro>=1.5.2",
-    "datamaestro-text",
-    "experimaestro>=1.15.1",
+    "datamaestro-text>=2025.9.11",
     "experimaestro-ir[anserini,neural]",
+    "ir-datasets",
+    "pandas>=2.3.1",
     "tensorboard",
-    "torch>=2.6.0",
+    "torch<2.8.0",
+    "matplotlib>=3.10.8",
     "numpy<2",
     "pandas>=2.2.3",
-    "ir-datasets<0.5.9",
-    "transformers=4.56.2",
     "scikit-learn>=1.6.1",
     "scipy>=1.12.0",
     "ir_measures>=0.3.7"
 ]
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+[tool.uv]
+package = true
 
-[tool.hatch.build.targets.wheel]
-packages = [
-  "src",
+override-dependencies = [
+    "nmslib ; sys_platform == 'never'",
 ]
 
-[tool.hatch.build]
-dev-mode-dirs = ["."]
+[tool.uv.sources]
+ir-datasets = { git = "https://github.com/bpiwowar/ir_datasets.git" }
+datamaestro = { git = "https://github.com/experimaestro/datamaestro" }
+datamaestro-text = { git = "https://github.com/experimaestro/datamaestro_text.git" }
+experimaestro-ir = { git = "https://github.com/MathVast/experimaestro-ir" }
+experimaestro = { git = "https://github.com/experimaestro/experimaestro-python.git", rev = "46b0ce2" }
+
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "notebook",
+]
 
 
