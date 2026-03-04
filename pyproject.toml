@@ -27,7 +27,7 @@ override-dependencies = [
 ]
 
 [tool.uv.sources]
-ir-datasets = { git = "https://github.com/bpiwowar/ir_datasets.git" }
+ir-datasets = { git = "https://github.com/MathVast/ir_datasets.git", branch = "bioasq-2020" }
 datamaestro = { git = "https://github.com/experimaestro/datamaestro" }
 datamaestro-text = { git = "https://github.com/experimaestro/datamaestro_text.git" }
 experimaestro-ir = { git = "https://github.com/MathVast/experimaestro-ir" }
