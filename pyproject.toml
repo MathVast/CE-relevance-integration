@@ -4,19 +4,23 @@ version = "0.0.1"
 requires-python = ">=3.10,<3.11"
 
 dependencies = [
-    "datamaestro>=1.5.2",
-    "datamaestro-text>=2025.9.11",
-    "experimaestro-ir[anserini,neural]",
+    "datamaestro>=1.4.2",
+    "setuptools<82.0.0",
+    "datamaestro-text>=2025.5.13",
+    "experimaestro<=1.8.9",
+    "experimaestro_ir",
     "ir-datasets",
     "pandas>=2.3.1",
     "tensorboard",
-    "torch<2.8.0",
+    "torch<2.7.0",
     "matplotlib>=3.10.8",
     "numpy<2",
     "pandas>=2.2.3",
     "scikit-learn>=1.6.1",
     "scipy>=1.12.0",
-    "ir_measures>=0.3.7"
+    "ir_measures>=0.3.7",
+    "python_terrier==0.10.0",
+    "transformers==4.24.0",
 ]
 
 [tool.uv]
@@ -28,11 +32,7 @@ override-dependencies = [
 
 [tool.uv.sources]
 ir-datasets = { git = "https://github.com/MathVast/ir_datasets.git", branch = "bioasq-2020" }
-datamaestro = { git = "https://github.com/experimaestro/datamaestro" }
-datamaestro-text = { git = "https://github.com/experimaestro/datamaestro_text.git" }
-experimaestro-ir = { git = "https://github.com/MathVast/experimaestro-ir" }
-experimaestro = { git = "https://github.com/experimaestro/experimaestro-python.git", rev = "46b0ce2" }
-
+experimaestro-ir = { path = "/home/vast/experimaestro-ir", editable = true }
 
 [dependency-groups]
 dev = [
