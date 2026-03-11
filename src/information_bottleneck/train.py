@@ -43,8 +43,8 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-RANGE_ALPHA = [1e-3, 1e-2, 1e-1, 1, 10] # [1e-3, 1e-2, 1e-1, 1, 10]
-RANGE_LR = [1e-1, 1] # [1e-1, 1]
+RANGE_ALPHA = [10] # [1e-3, 1e-2, 1e-1, 1, 10]
+RANGE_LR = [1] # [1e-1, 1]
 MASKING_STRATEGIES = ["gumbel_softmax"]
 RANGE_MASKS_INITIAL_VALUES = [3.0]
 RANGE_TAU = [1.0]
