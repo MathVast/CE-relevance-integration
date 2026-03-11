@@ -24,6 +24,8 @@ class AblationSchemeOutput(Config):
     name: Param[str]
 
 class AblationSchemes(Task):
+    __xpmid__="src.ablation.ablation_infonce.ablationschemes"
+    
     target_modules_regex: Param[Optional[List[str]]]
 
     pruning_percentages: Param[List[float]]

@@ -60,7 +60,9 @@ class GrabAttentionPatterns(torch.nn.Module):
         return model_outputs
 
 
-class GenerateAttentionPatterns(Task):    
+class GenerateAttentionPatterns(Task):  
+    __xpmid__="src.evd.attention_patterns_generation.generateattentionpatterns"
+
     ranker_id: Param[str] 
 
     base_hf_id: Param[str]
@@ -238,6 +240,8 @@ class GenerateAttentionPatterns(Task):
                 f.close()
 
 class GenerateAttentionPatternsWeakNegatives(Task):
+    __xpmid__="src.evd.attention_patterns_generation.generateattentionpatternsweaknegatives"
+    
     ranker_id: Param[str] 
 
     base_hf_id: Param[str]

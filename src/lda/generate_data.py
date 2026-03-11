@@ -86,6 +86,8 @@ def update_target_storage(data_storage, total_weights_storage, activations, span
             module_storage[name]["streamed_mean"] += proba_diff / total_weights_storage[name] * (numpy_tensor - module_storage[name]["streamed_mean"])
 
 class GenerateMatrices(Task):    
+    __xpmid__="src.evd.generate_data.generatematrices"
+
     ranker_id: Param[str] 
 
     base_hf_id: Param[str]
@@ -293,6 +295,8 @@ class GenerateMatrices(Task):
 
 
 class GenerateMatricesWeakNegatives(Task):
+    __xpmid__="src.evd.generate_data.generatematricesweaknegatives"
+
     ranker_id: Param[str] 
 
     base_hf_id: Param[str]
@@ -419,11 +423,15 @@ class GenerateMatricesWeakNegatives(Task):
         logging.info(f"Number of pairs whose activations are stored: {total_count} weak negatives.")
 
 class AgregateMatricesOutput(Config):
+    __xpmid__="src.evd.generate_data.agregatematricesoutput"
+    
     task: Meta[Config]
 
     per_dataset_storage_paths: Meta[Dict]
         
 class AgregateMatrices(Task):    
+    __xpmid__="src.evd.generate_data.agregatematrices"
+
     ranker_id: Param[str] 
 
     base_hf_id: Param[str]

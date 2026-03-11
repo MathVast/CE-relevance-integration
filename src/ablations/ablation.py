@@ -22,6 +22,8 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 class AblationAttention(Task):
+    __xpmid__="src.ablations.ablation_study.ablationattention"
+
     cut_attention_from: Param[List[str]]
 
     cut_attention_to: Param[List[str]]
@@ -45,7 +47,7 @@ class AblationAttention(Task):
     output_path: Annotated[Path, pathgenerator("output")]
     
     def task_outputs(self, dep: Callable[[Config], None]) -> AblationOutput:
-        return dep(AblationOutput.C(task=self.C()))
+        return dep(AblationOutput.C(task=self))
 
     def execute(self):
         for direction in self.cut_attention_from:

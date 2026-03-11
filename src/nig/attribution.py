@@ -190,6 +190,8 @@ def nig_infonce_full_model(
         return product_storage, None
 
 class AttributeInfoNCE(Task):
+    __xpmid__="src.attribution_methods.attribution_infonce.attributeinfonce"
+
     cross_scorer: Param[Scorer]
 
     sampler: Param[Sampler]

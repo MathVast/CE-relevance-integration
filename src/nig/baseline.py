@@ -14,11 +14,13 @@ class Baseline(Config):
 
 # Concrete strategies
 class PadEverything(Baseline):
+    __xpmid__="src.attribution_methods.baselines.padeverything"
     def generate_baseline(self, tokenizer: AutoTokenizer, input, model_embedding, device: torch.DeviceObjType) -> Any:
         baseline = [tokenizer.pad_token_id for i in range(len(input[0]))]
         return model_embedding(torch.Tensor([baseline]).to(torch.int).to(device))
 
 class PadQuery(Baseline):
+    __xpmid__="src.attribution_methods.baselines.padquery"
     def generate_baseline(self, tokenizer: AutoTokenizer, input, model_embedding, device: torch.DeviceObjType) -> Any:
         baseline = list()
         input_splitted = split_list_by_values(np.array(input[0].cpu()), [tokenizer.sep_token_id])
@@ -36,6 +38,7 @@ class PadQuery(Baseline):
         return model_embedding(torch.Tensor([baseline]).to(torch.int).to(device))
 
 class PadQueryAndPassage(Baseline):
+    __xpmid__="src.attribution_methods.baselines.padqueryandpassage"
     def generate_baseline(self, tokenizer: AutoTokenizer, input, model_embedding, device: torch.DeviceObjType) -> Any:
         baseline = list()
         input_splitted = split_list_by_values(np.array(input[0].cpu()), [tokenizer.sep_token_id])

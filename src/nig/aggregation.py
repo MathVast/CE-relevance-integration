@@ -16,6 +16,8 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 class AggregationResults(Task):
+    __xpmid__="src.xps.aggregation.aggregationresults"
+    
     cross_scorer: Param[Scorer]
     
     attribution_result: Param[Config]

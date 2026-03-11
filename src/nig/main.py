@@ -24,7 +24,7 @@ def run(
     if not cfg.attribution.check_infonce():
         raise ValueError("One of the dataset's spec is missing an attribute. Please check the configuration file.")
     
-    model : HFCrossScorer = HFCrossScorer.C(hf_id=cfg.base_hf_id, max_length=cfg.attribution.max_input_length)
+    model : HFCrossScorer = HFCrossScorer.C(hf_id=cfg.base_hf_id, max_length=512)
 
     random = cfg.random
     launcher_attribution= find_launcher(cfg.attribution.requirements)

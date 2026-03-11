@@ -26,12 +26,14 @@ class AgregationAblations(Task):
 
     :param ablations_output: The output of the ablations tasks over the dataset for this attention pattern.
     """
+    __xpmid__="src.ablations.ablation_study.agregationablations"
+
     ablations_output: Param[List[AblationOutput]]
 
     storage_path: Annotated[Path, pathgenerator("storage")]
 
     def task_outputs(self, dep: Callable[[Config], None]) -> AgregationOutput:
-        return dep(AgregationOutput.C(task=self.C()))
+        return dep(AgregationOutput.C(task=self))
 
     def execute(self):
         agregation_results = dict()
@@ -134,6 +136,8 @@ class SummaryAblationStudies(Task):
 
     :param ablations_output: The output of the ablations tasks per dataset for this attention pattern.
     """
+    __xpmid__="src.ablations.ablation_study.summaryablationstudies"
+
     agregation_outputs: Param[Dict[str, AgregationOutput]]
 
     storage_path: Annotated[Path, pathgenerator("storage")]

@@ -31,6 +31,8 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 class ComputeClassification(Task):
+    __xpmid__="src.evd.lda_classification.computeclassification"
+
     agregation_output: Param[AgregateMatricesOutput] # We need it in case of weak negatives as they have been sampled randomly
 
     list_of_datasets: Param[List[Dict]]
@@ -363,6 +365,8 @@ class ComputeClassification(Task):
         logging.info(f"Classification results saved to {csv_path}")
 
 class AggregateClassificationResults(Task):
+    __xpmid__="src.evd.lda_xp.aggregateclassificationresults"
+    
     list_of_classifications: Param[List[ComputeClassification]]
 
     output_path: Annotated[Path, pathgenerator("classification_results")]

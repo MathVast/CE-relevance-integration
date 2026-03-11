@@ -27,6 +27,8 @@ STRONG_NEGATIVE_COLOR = '#5e3c99'
 WEAK_NEGATIVE_COLOR = '#1a9641'
 
 class CollectDirections(Task):
+    __xpmid__="src.evd.lda_xp.collectdirections"
+    
     agregation_output: Param[AgregateMatricesOutput]
 
     target_modules: Param[List[str]]

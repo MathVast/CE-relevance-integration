@@ -40,6 +40,7 @@ class TopPassagesSampler(Task, Sampler):
     
     Output is written to a tsv file.
     """
+    __xpmid__="src.ablations.ablation_utils.toppassagessampler"
 
     dataset: Param[Adhoc]
     """The IR adhoc dataset"""
@@ -131,6 +132,8 @@ class DiversePassagesSamplerWithHardNegatives(Task, Sampler):
     
     If after the first filtering, we have less than the maximum number of documents per relevance level, we
     sample the remaining documents from the retriever."""
+
+    __xpmid__="src.evd.utils.diversepassagessamplerwithhardnegatives"
 
     dataset: Param[Adhoc]
     """The IR adhoc dataset"""
@@ -275,6 +278,8 @@ class DiversePassagesSamplerWithHardNegatives(Task, Sampler):
 
 class AttributionInfoNCESampler(PairwiseModelBasedSampler):
     """A pairwise sampler based on a retrieval model"""
+
+    __xpmid__="src.attribution_methods.samplers.attributioninfoncesampler"
 
     relevant_levels: Param[List[int]]
 

@@ -17,9 +17,13 @@ import logging
 logging.basicConfig(level=logging.INFO)    
 
 class AblationOutput(Config):
+    __xpmid__="src.ablations.ablation_utils.ablationoutput"
+    
     task: Meta[Config]
 
 class AgregationOutput(Config):
+    __xpmid__="src.ablations.ablation_utils.agregationoutput"
+    
     task: Meta[Config]
 
 class PrunedModelForCrossScorer(torch.nn.Module):
@@ -62,6 +66,8 @@ class PrunedModelForCrossScorer(torch.nn.Module):
         return model_outputs        
 
 class PerspectiveAblationStudy(Task):
+    __xpmid__="src.ablations.ablation_utils.perspectiveablationstudy"
+
     dataset_name: Param[str]
 
     parsed_dataset: Param[PairwiseSampleDataset]

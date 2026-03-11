@@ -20,6 +20,8 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 class SummarizeAttentionPatterns(Task):
+    __xpmid__="src.evd.attention_patterns.summarizeattentionpatterns"
+
     generation_outputs: Param[List[Config]]
 
     base_hf_id: Param[str]

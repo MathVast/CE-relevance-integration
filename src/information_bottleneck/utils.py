@@ -55,6 +55,8 @@ class MaskingStrategyEnum(Enum):
         return self.value
     
 class MaskingStrategy(Config, torch.nn.Module):
+    __xpmid__="src.ablations.mask_utils.maskingstrategy"
+
     num_categories: Param[int]
 
     num_attention_heads: Param[int]
@@ -102,6 +104,8 @@ class MaskingStrategy(Config, torch.nn.Module):
         raise NotImplementedError()
     
 class SigmoidMaskingStrategy(MaskingStrategy):
+    __xpmid__="src.ablations.mask_utils.sigmoidmaskingstrategy"
+
     def initialize(self):
         super().initialize()
         # This is what we'll actually be learning. These embeddings in fact correspond to the weights applied to each block of the attention matrix.
@@ -117,6 +121,8 @@ class SigmoidMaskingStrategy(MaskingStrategy):
         return torch.select(mask, -1, 0)
     
 class GumbelSoftmaxMaskingStrategy(MaskingStrategy):
+    __xpmid__="src.ablations.mask_utils.gumbelsoftmaxmaskingstrategy"
+
     tau: Param[float]
 
     def initialize(self):
@@ -141,6 +147,8 @@ class GumbelSoftmaxMaskingStrategy(MaskingStrategy):
         return mask
     
 class GumbelSigmoidMaskingStrategy(MaskingStrategy):
+    __xpmid__="src.ablations.mask_utils.gumbelsigmoidmaskingstrategy"
+
     tau: Param[float]
 
     def initialize(self):
@@ -251,6 +259,8 @@ class TestingMaskForCrossScorer(torch.nn.Module):
         return model_outputs.logits
 
 class LearningMaskForCrossScorer(LearnableScorer, DistributableModel):
+    __xpmid__="src.ablations.mask_utils.learningmaskforcrossscorer"
+
     ranker_id: Param[str]
 
     base_model_id: Param[str]
@@ -396,6 +406,8 @@ class LearningMaskForCrossScorer(LearnableScorer, DistributableModel):
 
 class DistillationPairwiseTrainerWithSparsification(PairwiseTrainer):
     """Pairwise trainer uses samples of the form (query, positive, negative)"""
+    __xpmid__="src.ablations.mask_utils.distillationpairwisetrainerwithsparsification"
+
     alpha: Param[float] = 0.01
     lossfn: Param[DistillationPairwiseLoss]
 
@@ -435,6 +447,7 @@ class MainListener(LearnerListener):
     Every `interval` epochs, the listener will save the model and the optimizer.
     It also controls when to log the histogram of the distribution of the weights.
     """
+    __xpmid__="src.ablations.mask_utils.mainlistener"
 
     path: Annotated[Path, pathgenerator("checkpoints")]
     """Path to the checkpoints"""
