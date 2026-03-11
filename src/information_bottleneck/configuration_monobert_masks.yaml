@@ -9,8 +9,12 @@ ranker_id: castorini/monobert-large-msmarco
 post_processing: 
   requirements: "duration=8h & cuda(mem=12G)"
 
-preprocessing_requirements: duration=6h & cpu(cores=8)
-indexation_requirements: duration=6h & cpu(cores=8)
+pre_processing:
+  requirements: duration=6h & cpu(cores=8)
+
+indexation:
+  requirements: duration=6h & cpu(cores=8)
+  
 learner:
   validation_interval: 10
   checkpoint_interval: 10
