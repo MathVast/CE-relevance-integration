@@ -22,7 +22,7 @@ gather_matrices:
     {"dataset_name": "irds.dpr-w100.natural-questions.dev", "max_passages_per_relevance_level": 2, "max_passages_per_query": 10, "relevance_levels": [2]}, # lot of queries there so we diminish all values
     {"dataset_name": "irds.beir.bioasq.test", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [1]},
   ]
-  get_weak_negatives: false
+  get_weak_negatives: true
   generation_requirements: "duration=2 days & cuda(mem=12G) & cpu(cores=8)"
   max_queries: 1000
 
