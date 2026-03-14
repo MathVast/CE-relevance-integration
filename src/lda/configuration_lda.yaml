@@ -4,7 +4,7 @@ description: Configuration to control only the lda analysis experiments.
 module: lda.main
 
 gpu: true
-ranker_id: cross-encoder/ms-marco-MiniLM-L12-v2
+ranker_id: xpmir/cross-encoder-bert-base-infoNCE # castorini/monobert-large-msmarco
 
 post_processing: 
   requirements: "duration=8h & cuda(mem=12G)"

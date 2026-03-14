@@ -4,7 +4,7 @@ description: Test the attribution of MiniLM on various datasets using InfoNCE
 module: nig.main
 
 gpu: true
-base_hf_id: cross-encoder/ms-marco-MiniLM-L12-v2
+base_hf_id: xpmir/cross-encoder-bert-base-infoNCE # cross-encoder/ms-marco-MiniLM-L12-v2
 
 attribution:
   dataset_specs: [
