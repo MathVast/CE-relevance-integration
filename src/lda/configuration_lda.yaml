@@ -7,7 +7,7 @@ gpu: true
 ranker_id: xpmir/cross-encoder-bert-base-infoNCE # castorini/monobert-large-msmarco
 
 post_processing: 
-  requirements: "duration=8h & cuda(mem=12G)"
+  requirements: "duration=48h & cpu(cores=8)"
 
 gather_matrices:
   list_of_datasets: [
@@ -24,7 +24,7 @@ gather_matrices:
   ]
   get_weak_negatives: true
   max_query_len: 6
-  generation_requirements: "duration=100h & cuda(mem=12G)"
+  generation_requirements: "duration=100h & cuda(mem=32G)"
   max_queries: 1000
 
 list_of_datasets: [

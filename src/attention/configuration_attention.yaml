@@ -7,7 +7,7 @@ gpu: true
 ranker_id: xpmir/cross-encoder-bert-base-infoNCE
 
 post_processing: 
-  requirements: "duration=8h & cuda(mem=12G) & cpu(cores=8)"
+  requirements: "duration=24h & cpu(cores=8)"
 
 gather_matrices:
   list_of_datasets: [
@@ -24,8 +24,9 @@ gather_matrices:
   ]
   get_weak_negatives: true
   generation_requirements: "duration=2 days & cuda(mem=12G) & cpu(cores=8)"
+  indexation_requirements: "duration=2 days & cpu(cores=4)"
+  sampling_requirements: "duration=2 days & cpu(cores=4)"
   max_queries: 1000
 
 start_layer: 0
 end_layer: 12
-requirements: "duration=12h & cuda(mem=12G)"

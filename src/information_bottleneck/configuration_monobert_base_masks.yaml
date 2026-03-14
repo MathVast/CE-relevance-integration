@@ -11,8 +11,10 @@ post_processing:
 
 pre_processing: 
   requirements: "duration=6h & cpu(cores=8)"
+
 indexation:
   requirements: "duration=6h & cpu(cores=8)"
+
 learner:
   validation_interval: 10
   checkpoint_interval: 10
@@ -26,7 +28,7 @@ learner:
       eps: 1.0e-6
       re_no_l2_regularization: []
       scheduler: false
-  requirements: duration=20h & cuda(mem=24G)
+  requirements: duration=100h & cuda(mem=32G)
 
 start_layer: 0
 end_layer: 12
@@ -37,7 +39,7 @@ validation:
   size: 100
 
 retrieval:
-  requirements: duration=12h & cuda(mem=24G) * 2
+  requirements: duration=12h & cuda(mem=24G)
   k: 100
 
 test_datasets: [
@@ -53,4 +55,4 @@ test_datasets: [
   "irds.beir.bioasq.test", 
 ]
 suffix: "monobert-base_masks-v2.pth"
-test_requirements: "duration=24h & cuda(mem=24G)"
+test_requirements: "duration=100h & cuda(mem=32G)"
