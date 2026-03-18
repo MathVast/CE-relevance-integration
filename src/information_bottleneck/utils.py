@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 from typing import Callable, Dict, List, Optional, Tuple
 from pathlib import Path
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoConfig
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, BertConfig
 from sklearn.metrics import ndcg_score
 from tqdm import tqdm
 import ir_measures
@@ -194,7 +194,7 @@ class TestingMaskForCrossScorer(torch.nn.Module):
         self.end_layer = end_layer
         self.ranker_id = ranker_id
         self.base_model_id = base_model_id
-        self.config = AutoConfig.from_pretrained(self.ranker_id)
+        self.config = BertConfig.from_pretrained(self.ranker_id)
         self.tokenizer = AutoTokenizer.from_pretrained(self.base_model_id)
         self.max_seq_len = max_seq_len
         self.device = device
@@ -523,7 +523,7 @@ class AdvancedAblationTestFromPath(Task):
         passages = prepare_dataset(self.dataset_name)
         topics = prepare_dataset(self.dataset_name + '.queries')
     
-        ranker_config = AutoConfig.from_pretrained(self.ranker_id)
+        ranker_config = BertConfig.from_pretrained(self.ranker_id)
         original_model = AutoModelForSequenceClassification.from_pretrained(self.ranker_id)
         model = AutoModelForSequenceClassification.from_pretrained(self.ranker_id)
 

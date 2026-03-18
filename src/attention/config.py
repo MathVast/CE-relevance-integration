@@ -3,7 +3,7 @@ from xpmir.papers.helpers import (
     NeuralIRExperiment,
 )
 from attrs import field
-from transformers import AutoConfig
+from transformers import BertConfig
 from attrs import Factory
 from config_utils import GatherMatrices, Postprocessing
 
@@ -27,7 +27,7 @@ class AttentionPatternStudy(NeuralIRExperiment):
     requirements: str = "duration=2d & cuda(mem=12G)"
 
     def check_end_layer(self):
-        config = AutoConfig.from_pretrained(self.ranker_id)
+        config = BertConfig.from_pretrained(self.ranker_id)
         if self.end_layer > config.num_hidden_layers:
             logging.info("Specified end layer is greater than the number of hidden layers in the model. Setting end layer to the number of hidden layers in the model.")
             self.end_layer = config.num_hidden_layers

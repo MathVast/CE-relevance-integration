@@ -10,7 +10,7 @@ from information_bottleneck.utils import (
     SigmoidMaskingStrategy, 
 )
 
-from transformers import AutoConfig
+from transformers import BertConfig
 from xpmir.learning.devices import DEFAULT_DEVICE, Device
 from xpmir.learning.optim import AdamW, ParameterOptimizer
 from xpmir.learning.schedulers import LinearWithWarmup
@@ -85,7 +85,7 @@ def advanced_ablation_optimization(
         retrievers, store=documents, k=cfg.learner.validation_top_k
     )
 
-    ranker_config = AutoConfig.from_pretrained(ranker_id)
+    ranker_config = BertConfig.from_pretrained(ranker_id)
 
     outputs = list()
     for masking_strategy_text in MASKING_STRATEGIES:

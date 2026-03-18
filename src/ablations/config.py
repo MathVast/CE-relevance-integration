@@ -7,7 +7,7 @@ from attrs import Factory, field
 
 from config_utils import Postprocessing
 
-from transformers import AutoConfig
+from transformers import BertConfig
 import logging
 logging.basicConfig(level=logging.INFO)
 
@@ -29,7 +29,7 @@ class AblationStudy(NeuralIRExperiment):
     post_processing: Postprocessing = Factory(Postprocessing)
 
     def check_end_layer(self):
-        config = AutoConfig.from_pretrained(self.ranker_id)
+        config = BertConfig.from_pretrained(self.ranker_id)
         if self.end_layer > config.num_hidden_layers:
             logging.info("Specified end layer is greater than the number of hidden layers in the model. Setting end layer to the number of hidden layers in the model.")
             self.end_layer = config.num_hidden_layers
