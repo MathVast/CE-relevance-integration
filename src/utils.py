@@ -1,6 +1,7 @@
-from typing import  Dict, List, Tuple, Optional
+from typing import  Dict, List, Tuple, Optional, Union
 import numpy as np
 from tqdm import tqdm
+from xpmir.text import TokenizedTexts
 from xpmir.utils.functools import cache as cache
 from xpmir.papers.helpers.samplers import ValidationSample, prepare_collection, RandomFold
 from datamaestro_text.data.ir import PairwiseSampleDataset
@@ -153,3 +154,35 @@ def generic_dataset(cfg: ValidationSample, dataset_name: str, launcher=None):
         sizes=[cfg.size],
         exclude=None,
     ).submit(launcher=launcher)
+
+
+def batch_tokenize(
+    tokenizer,
+    model,
+    texts: Union[List[str], List[Tuple[str, str]]],
+    maxlen=None,
+    mask=False,
+) -> TokenizedTexts:
+    """Transform the text to tokens by using the tokenizer"""
+    if maxlen is None:
+        maxlen = tokenizer.model_max_length
+    else:
+        maxlen = min(maxlen, tokenizer.model_max_length)
+
+    r = tokenizer(
+        list(texts),
+        max_length=maxlen,
+        truncation=True,
+        padding=True,
+        return_tensors="pt",
+        return_length=True,
+        return_attention_mask=mask,
+    )
+    
+    return TokenizedTexts(
+        None,
+        r["input_ids"].to(model.device),
+        r["length"],
+        r.get("attention_mask", None),
+        r.get("token_type_ids", None),  # if r["token_type_ids"] else None
+    )

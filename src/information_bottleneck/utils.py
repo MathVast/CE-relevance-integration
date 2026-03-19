@@ -29,7 +29,7 @@ from experimaestro import Task, Param, Config, Meta, Constant, pathgenerator, An
 from datamaestro import prepare_dataset
 from datamaestro_text.data.ir import TextItem, IDItem, PairwiseSampleDataset
 
-from utils import untuple, INPUT_PART_TO_POSITION, get_relevance_levels
+from utils import untuple, INPUT_PART_TO_POSITION, get_relevance_levels, batch_tokenize
 from ablations.utils import AblationOutput
 
 import logging
@@ -398,7 +398,8 @@ class LearningMaskForCrossScorer(LearnableScorer, DistributableModel):
             probas = self.activation_fct(model_outputs.logits, dim=1)
     
         # In the forward also returns the masks / sizes to re-weight the loss
-        self.masking_strategy.reset_masks()
+        if not is_teacher:
+            self.masking_strategy.reset_masks()
         return untuple(probas[:,self.target_position],)
         
     def distribute_models(self, update):
