@@ -21,6 +21,8 @@ dependencies = [
     "ir_measures>=0.3.7",
     "python_terrier==0.10.0",
     "transformers>=4.24.0",
+    "pyserini==0.21.0",
+    "faiss-cpu",
 ]
 
 [tool.uv]
