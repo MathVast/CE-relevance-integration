@@ -7,7 +7,7 @@ import os
 from enum import Enum
 import numpy as np
 import pandas as pd
-from typing import Callable, Dict, List, Optional, Tuple
+from typing import Callable, Dict, List, Optional, Tuple, Union
 from pathlib import Path
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, BertConfig
 from sklearn.metrics import ndcg_score
@@ -16,6 +16,7 @@ import ir_measures
 from ir_measures import *
 from scipy import stats
 
+from xpmir.text import TokenizedTexts
 from xpmir.learning.context import TrainerContext, Loss
 from xpmir.distributed import DistributableModel
 from xpmir.rankers import LearnableScorer, ScorerOutputType
@@ -29,7 +30,7 @@ from experimaestro import Task, Param, Config, Meta, Constant, pathgenerator, An
 from datamaestro import prepare_dataset
 from datamaestro_text.data.ir import TextItem, IDItem, PairwiseSampleDataset
 
-from utils import untuple, INPUT_PART_TO_POSITION, get_relevance_levels, batch_tokenize
+from utils import untuple, INPUT_PART_TO_POSITION, get_relevance_levels
 from ablations.utils import AblationOutput
 
 import logging
@@ -80,12 +81,16 @@ class MaskingStrategy(Config, torch.nn.Module):
 
    # @torch.compile
     def init_current_masks(self, inputs, device):
-        self.current_masks = torch.zeros((self.end_layer - self.start_layer, len(inputs), self.num_attention_heads, self.max_seq_len, self.max_seq_len, self.n_dim), device=device)
-        self.current_masks.requires_grad = False
-        # Now we need to convert each type of combination to the corresponding weight in a learned embedding table
+        # Build masks through differentiable ops only so gradients can flow to mask embeddings.
+        input_indices = inputs.int()
+        layer_masks = []
         for layer_nb in range(self.start_layer, self.end_layer):
+            head_masks = []
             for attention_head in range(self.num_attention_heads):
-                self.current_masks[layer_nb, :, attention_head] = self.masks_weights[layer_nb * self.num_attention_heads + attention_head](inputs.int())
+                embedding = self.masks_weights[layer_nb * self.num_attention_heads + attention_head]
+                head_masks.append(embedding(input_indices))
+            layer_masks.append(torch.stack(head_masks, dim=1))
+        self.current_masks = torch.stack(layer_masks, dim=0)
 
     def reset_masks(self):
         assert self.current_masks is not None, "Masks are already set to None"
@@ -356,6 +361,36 @@ class LearningMaskForCrossScorer(LearnableScorer, DistributableModel):
         for handle in self.hooks_handles:
             handle.remove()
 
+    def batch_tokenize(self,
+        texts: Union[List[str], List[Tuple[str, str]]],
+        batch_first=True,
+        maxlen=None,
+        mask=False,
+    ) -> TokenizedTexts:
+        if maxlen is None:
+            maxlen = self.tokenizer.model_max_length
+        else:
+            maxlen = min(maxlen, self.tokenizer.model_max_length)
+
+        assert batch_first, "Batch first is the only option"
+
+        r = self.tokenizer(
+            list(texts),
+            max_length=maxlen,
+            truncation=True,
+            padding="max_length",
+            return_tensors="pt",
+            return_length=True,
+            return_attention_mask=mask,
+        )
+        return TokenizedTexts(
+            None,
+            r["input_ids"].to(self.device),
+            r["length"],
+            r.get("attention_mask", None),
+            r.get("token_type_ids", None),  # if r["token_type_ids"] else None
+        )
+
     def forward(
         self, 
         inputs: List[Tuple],
@@ -366,9 +401,7 @@ class LearningMaskForCrossScorer(LearnableScorer, DistributableModel):
     ):  
         self.is_teacher = is_teacher
         if not is_input_tokenized:
-            tokenized_inputs = batch_tokenize(
-                self.tokenizer,
-                self.model,
+            tokenized_inputs = self.batch_tokenize(
                 [
                     (tr[TextItem].text, dr[TextItem].text)
                     for tr, dr in zip(inputs.topics, inputs.documents)
@@ -475,6 +508,23 @@ class MainListener(LearnerListener):
                 f"Saving the checkpoint {state.epoch}"
             )
             self.context.copy(self.path / f"{self.id}/checkpoint-{state.epoch}.pt")
+            # Diagnostic check: verify mask parameters actually changed
+            if not hasattr(self, '_prev_mask_params'):
+                self._prev_mask_params = [mask.weight.data.clone().detach().cpu() for mask in state.model.masks_weights]
+            else:
+                param_changed = False
+                for idx, (mask, prev) in enumerate(zip(state.model.masks_weights, self._prev_mask_params)):
+                    delta = (mask.weight.data.clone().detach().cpu() - prev).abs().max().item()
+                    if delta > 1e-10:
+                        param_changed = True
+                        break
+                if not param_changed:
+                    logging.warning(
+                        f"Mask parameters have not changed since last checkpoint (epoch {state.epoch - self.interval}). "
+                        f"Check if optimizer is stepping masks, or if learning rate is too low (current default lr=1.0)."
+                    )
+                self._prev_mask_params = [mask.weight.data.clone().detach().cpu() for mask in state.model.masks_weights]
+        
         if state.epoch % self.sparsity_interval == 0:
             logging.info(
                 f"Reporting the sparsity levels at epoch {state.epoch}"
