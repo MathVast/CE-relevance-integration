@@ -15,7 +15,7 @@ import torch.nn.functional as F
 from pathlib import Path
 import numpy as np
 import os
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from transformers import BertForSequenceClassification, AutoTokenizer
 
 from xpmir.learning.devices import DEFAULT_DEVICE, Device, DeviceInformation
 from experimaestro import Task, Param, Config, Meta, Constant
@@ -64,7 +64,7 @@ class ComputeClassification(Task):
         """
         Generate the activations that will then be plotted.
         """
-        model = AutoModelForSequenceClassification.from_pretrained(self.ranker_id)
+        model = BertForSequenceClassification.from_pretrained(self.ranker_id)
         model.eval()
         if model.config.num_labels == 1:
             activation_fct = lambda x, dim: F.sigmoid(x)

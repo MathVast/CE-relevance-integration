@@ -7,7 +7,7 @@ from typing import Callable, Dict, List, Annotated
 import numpy as np
 import torch
 import torch.nn.functional as F
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from transformers import BertForSequenceClassification, AutoTokenizer
 from xpmir.learning.devices import DEFAULT_DEVICE, Device, DeviceInformation
 from datamaestro import prepare_dataset
 from datamaestro_text.data.ir import TextItem, PairwiseSampleDataset
@@ -60,8 +60,8 @@ class AblationAttention(Task):
         self.device.execute(self.device_execute, parsed_dataset_with_qrels)
 
     def device_execute(self, device_information: DeviceInformation, parsed_dataset_with_qrels: Dict[str, Dict[str, int]]):
-        original_model = AutoModelForSequenceClassification.from_pretrained(self.ranker_id)
-        model = AutoModelForSequenceClassification.from_pretrained(self.ranker_id)
+        original_model = BertForSequenceClassification.from_pretrained(self.ranker_id)
+        model = BertForSequenceClassification.from_pretrained(self.ranker_id)
         ablation_model = PrunedModelForCrossScorer(
             model=model,
             start_layer=self.start_layer,

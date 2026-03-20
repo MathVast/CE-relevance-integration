@@ -5,7 +5,7 @@ import random
 import numpy as np
 import torch
 from typing import Annotated, Callable, Dict, List
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from transformers import BertForSequenceClassification, AutoTokenizer
 import torch.nn.functional as F
 from datamaestro import prepare_dataset
 from datamaestro_text.data.ir import TextItem, IDItem
@@ -112,7 +112,7 @@ class GenerateMatrices(Task):
         self.device.execute(self.device_execute)
 
     def device_execute(self, device_information: DeviceInformation):
-        model = AutoModelForSequenceClassification.from_pretrained(self.ranker_id)
+        model = BertForSequenceClassification.from_pretrained(self.ranker_id)
         model.eval()
         num_labels = model.config.num_labels
         # We determine in advance what activation function we'll need to parse the prediction as well as which label interests us
@@ -320,7 +320,7 @@ class GenerateMatricesWeakNegatives(Task):
         self.device.execute(self.device_execute)
 
     def device_execute(self, device_information: DeviceInformation):
-        model = AutoModelForSequenceClassification.from_pretrained(self.ranker_id)
+        model = BertForSequenceClassification.from_pretrained(self.ranker_id)
         model.eval()
         num_labels = model.config.num_labels
         # We determine in advance what activation function we'll need to parse the prediction as well as which label interests us

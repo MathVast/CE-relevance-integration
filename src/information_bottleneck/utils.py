@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 from typing import Callable, Dict, List, Optional, Tuple, Union
 from pathlib import Path
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, BertConfig
+from transformers import AutoTokenizer, BertForSequenceClassification, BertConfig
 from sklearn.metrics import ndcg_score
 from tqdm import tqdm
 import ir_measures
@@ -290,7 +290,7 @@ class LearningMaskForCrossScorer(LearnableScorer, DistributableModel):
 
         self._dummy_params = torch.nn.Parameter(torch.Tensor())
 
-        self.model = AutoModelForSequenceClassification.from_pretrained(self.ranker_id)
+        self.model = BertForSequenceClassification.from_pretrained(self.ranker_id)
         for param in self.model.parameters():
             param.requires_grad = False
 
@@ -575,8 +575,8 @@ class AdvancedAblationTestFromPath(Task):
         topics = prepare_dataset(self.dataset_name + '.queries')
     
         ranker_config = BertConfig.from_pretrained(self.ranker_id)
-        original_model = AutoModelForSequenceClassification.from_pretrained(self.ranker_id)
-        model = AutoModelForSequenceClassification.from_pretrained(self.ranker_id)
+        original_model = BertForSequenceClassification.from_pretrained(self.ranker_id)
+        model = BertForSequenceClassification.from_pretrained(self.ranker_id)
 
         if model.config.num_labels == 1:
             activation_fct = lambda x, dim: F.sigmoid(x)

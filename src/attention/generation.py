@@ -6,7 +6,7 @@ import pickle
 import random
 from typing import Annotated, Callable
 import torch
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from transformers import BertForSequenceClassification, AutoTokenizer
 import torch.nn.functional as F
 from datamaestro import prepare_dataset
 from datamaestro_text.data.ir import TextItem, IDItem
@@ -83,7 +83,7 @@ class GenerateAttentionPatterns(Task):
         self.device.execute(self.device_execute)
 
     def device_execute(self, device_information: DeviceInformation):
-        model = AutoModelForSequenceClassification.from_pretrained(self.ranker_id)
+        model = BertForSequenceClassification.from_pretrained(self.ranker_id)
         model.eval()
         num_labels = model.config.num_labels
         # Determine activation function and label extraction
@@ -267,7 +267,7 @@ class GenerateAttentionPatternsWeakNegatives(Task):
         os.makedirs(self.data_storage_path, exist_ok=True)
         os.makedirs(self.attentions_storage_path, exist_ok=True)
 
-        model = AutoModelForSequenceClassification.from_pretrained(self.ranker_id)
+        model = BertForSequenceClassification.from_pretrained(self.ranker_id)
         model.eval()
         num_labels = model.config.num_labels
 
