@@ -43,8 +43,8 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-RANGE_ALPHA = [10] # [1e-3, 1e-2, 1e-1, 1, 10]
-RANGE_LR = [1] # [1e-1, 1]
+RANGE_ALPHA = [1e-3, 1e-2, 1e-1, 1, 10]
+RANGE_LR = [1e-1, 1]
 MASKING_STRATEGIES = ["gumbel_softmax"]
 RANGE_MASKS_INITIAL_VALUES = [3.0]
 RANGE_TAU = [1.0]
@@ -99,7 +99,7 @@ def advanced_ablation_optimization(
                         end_layer=cfg.end_layer, 
                         max_seq_len=cfg.max_seq_len, 
                         masks_initial_value=tag(masks_initial_value)
-                    )
+                    ).tag("masking", masking_strategy_text)
                 elif masking_strategy_text ==  str(MaskingStrategyEnum.GUMBEL_SOFTMAX):
                     masking_strategy = GumbelSoftmaxMaskingStrategy.C(
                         num_categories=len(INPUT_PART_TO_POSITION.keys()), 
@@ -109,7 +109,7 @@ def advanced_ablation_optimization(
                         max_seq_len=cfg.max_seq_len, 
                         masks_initial_value=tag(masks_initial_value),
                         tau=tag(tau)
-                    )
+                    ).tag("masking", masking_strategy_text)
                 elif masking_strategy_text == str(MaskingStrategyEnum.GUMBEL_SIGMOID):
                     masking_strategy = GumbelSigmoidMaskingStrategy.C(
                         num_categories=len(INPUT_PART_TO_POSITION.keys()), 
@@ -119,7 +119,7 @@ def advanced_ablation_optimization(
                         max_seq_len=cfg.max_seq_len, 
                         masks_initial_value=tag(masks_initial_value),
                         tau=tag(tau)
-                    )
+                    ).tag("masking", masking_strategy_text)
                 else:
                     raise ValueError("Masking strategy not recognized.")
                 
@@ -131,7 +131,7 @@ def advanced_ablation_optimization(
                     end_layer=cfg.end_layer,
                     max_seq_len=cfg.max_seq_len,
                     masking_strategy=masking_strategy.tag("masking", masking_strategy_text),
-                )
+                ).tag("scorer", ranker_id)
 
                 for alpha in RANGE_ALPHA:
                     monobert_trainer = DistillationPairwiseTrainerWithSparsification.C(

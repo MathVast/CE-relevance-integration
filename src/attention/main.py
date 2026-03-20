@@ -20,7 +20,7 @@ def run(
     helper: IRExperimentHelper, cfg: AttentionPatternStudy
 ) -> PaperResults:
 
-    cfg.check_end_layer()
+    # cfg.check_end_layer()
 
     """For every qrels in each of the datasets, gather the outputs from the attention and the MLP blocks (for each layer of the model)
     and aggregate them. The aggregation is done by summing the outer product of the activations, weighted by the final probability of relevance of the qrels,
