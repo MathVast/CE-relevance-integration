@@ -23,6 +23,7 @@ dependencies = [
     "transformers>=4.24.0",
     "pyserini==0.21.0",
     "faiss-cpu",
+    "seaborn>=0.13.2",
 ]
 
 [tool.uv]
