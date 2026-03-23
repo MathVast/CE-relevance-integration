@@ -67,7 +67,7 @@ def nig_infonce_full_model(
     :param int batch_size: Batch size used for each iteration (true number of steps is batch_size x num_reps).
     :return Dict: Attribution for each activation unit for each layer in the model.
     """
-    layer_names, _ = get_interesting_modules(
+    layer_names = get_interesting_modules(
         model=cross_scorer.model,
     )
     product_storage = dict() 
@@ -115,7 +115,7 @@ def nig_infonce_full_model(
 
     extractor = OutputsExtractorInfoNCE(
         model=cross_scorer.model,
-        layer_names=layer_names.keys()
+        layer_names=layer_names
     )
 
     # Use these embeddings to compute the IG

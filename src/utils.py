@@ -68,15 +68,15 @@ def get_token_types_spans(input, tokenizer) -> List[Tuple]:
     slices.append(slice(query_len + 2 + document_len, query_len + 2 + document_len + 1)) # The second SEP token
     return slices
 
-def get_interesting_modules(model) -> Dict:
+def get_interesting_modules(model) -> List[str]:
     """
-    Returns a dictionnary containing the name of the interesting modules in the model.
+    Returns a list of the names of the interesting modules in the model.
 
-    :return Dict: Dictionnary where the key is the module's name and the value is the number of out features.
+    :return List[str]: List of module names.
     """
     interesting_layers = ["output.dense", "output.LayerNorm"]
     layer_names = list()
-    for name, module in model.named_modules():
+    for name, _ in model.named_modules():
         if any(word in name for word in interesting_layers):
             layer_names.append(name)
 
