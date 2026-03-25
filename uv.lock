@@ -1086,6 +1086,25 @@ wheels = [
 ]
 
 [[package]]
+name = "ijson"
+version = "3.5.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f4/57/60d1a6a512f2f0508d0bc8b4f1cc5616fd3196619b66bd6a01f9155a1292/ijson-3.5.0.tar.gz", hash = "sha256:94688760720e3f5212731b3cb8d30267f9a045fb38fb3870254e7b9504246f31", size = 68658, upload-time = "2026-02-24T03:58:30.974Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/6e/32/21c1b47a1afb7319944d0b9685c0997a9d574a77b030c82f6a1ac2cef4eb/ijson-3.5.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:ea8dcac10d86adaeead454bc25c97b68d0bda573d5fd6f86f5e21cf8f7906f88", size = 88935, upload-time = "2026-02-24T03:56:40.591Z" },
+    { url = "https://files.pythonhosted.org/packages/86/f7/6ac7ebbb3cd767c87cdcbb950a6754afd1c0977756347bfe03eb8e5b866d/ijson-3.5.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:92b0495bbb2150bbf14fc5d98fb6d76bcd1c526605a172709e602e6fedc96495", size = 60567, upload-time = "2026-02-24T03:56:41.919Z" },
+    { url = "https://files.pythonhosted.org/packages/c4/98/1140de9ae872468a8bc2e87c171228e25e58b1eb696b7fb430f7590fea44/ijson-3.5.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:7af0c4c8943be8b09a4e57bdc1da6001dae7b36526d4154fe5c8224738d0921f", size = 60620, upload-time = "2026-02-24T03:56:42.764Z" },
+    { url = "https://files.pythonhosted.org/packages/60/e1/67dfe0774e4c7ca6ec8702e280e8764d356f3db54358999818cda6df7679/ijson-3.5.0-cp310-cp310-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:45887d5e84ff0d2b138c926cebd9071830733968afe8d9d12080b3c178c7f918", size = 126558, upload-time = "2026-02-24T03:56:43.922Z" },
+    { url = "https://files.pythonhosted.org/packages/1f/ef/23d614fc773d428caeb6e197218b7e32adcc668ff5b98777039149571208/ijson-3.5.0-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:9a70b575be8e57a28c80e90ed349ad3a851c3478524c70e36e07d6092ecd12c9", size = 133091, upload-time = "2026-02-24T03:56:45.291Z" },
+    { url = "https://files.pythonhosted.org/packages/b8/80/99727603cd8a1d32edafa4392f4056b2420bf48c15afd34481c68a2d4435/ijson-3.5.0-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:2adeecd45830bfd5580ca79a584154713aabef0b9607e16249133df5d2859813", size = 130249, upload-time = "2026-02-24T03:56:46.333Z" },
+    { url = "https://files.pythonhosted.org/packages/0b/94/3a3d623ca80768e834be8a834ef05960e3b9e79af1a911704ff10c9e8792/ijson-3.5.0-cp310-cp310-musllinux_1_2_aarch64.whl", hash = "sha256:d873e72889e7fc5962ab58909f1adff338d7c2f49e450e5b5fe844eff8155a14", size = 133501, upload-time = "2026-02-24T03:56:47.54Z" },
+    { url = "https://files.pythonhosted.org/packages/cf/f6/df2c14ad340834eccee379046f155e4b66a16ddafd445429dee7b3323614/ijson-3.5.0-cp310-cp310-musllinux_1_2_i686.whl", hash = "sha256:9a88c559456a79708592234d697645d92b599718f4cbbeaa6515f83ac63ca0ae", size = 128438, upload-time = "2026-02-24T03:56:48.455Z" },
+    { url = "https://files.pythonhosted.org/packages/0c/7e/9ff5b8b5fee113f5607bc4149b707382a898eeb545153189b075e5ec8d59/ijson-3.5.0-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:cf83f58ad50dc0d39a2105cb26d4f359b38f42cef68b913170d4d47d97d97ba5", size = 131116, upload-time = "2026-02-24T03:56:49.737Z" },
+    { url = "https://files.pythonhosted.org/packages/64/20/954ce0d440d7cf72a3d8361b14406f9cdbf624b1625c10f8488857c769d6/ijson-3.5.0-cp310-cp310-win32.whl", hash = "sha256:aec4580a7712a19b1f95cd41bed260fc6a31266d37ef941827772a4c199e8143", size = 52724, upload-time = "2026-02-24T03:56:50.932Z" },
+    { url = "https://files.pythonhosted.org/packages/24/33/ece87d60502c6115642cbabeb8c122fa982212b392bc4f4ff5aab8e02dac/ijson-3.5.0-cp310-cp310-win_amd64.whl", hash = "sha256:9a9c4c70501e23e8eb1675330686d1598eebfa14b6f0dbc8f00c2e081cc628fa", size = 55125, upload-time = "2026-02-24T03:56:51.942Z" },
+]
+
+[[package]]
 name = "impact-index"
 version = "0.27.4"
 source = { registry = "https://pypi.org/simple" }
@@ -1164,6 +1183,11 @@ dependencies = [
     { name = "pyyaml" },
     { name = "requests" },
     { name = "tqdm" },
+]
+
+[package.optional-dependencies]
+ijson = [
+    { name = "ijson" },
 ]
 
 [[package]]
@@ -2813,7 +2837,7 @@ dependencies = [
     { name = "experimaestro" },
     { name = "experimaestro-ir" },
     { name = "faiss-cpu" },
-    { name = "ir-datasets" },
+    { name = "ir-datasets", extra = ["ijson"] },
     { name = "ir-measures" },
     { name = "matplotlib" },
     { name = "numpy" },
@@ -2842,7 +2866,7 @@ requires-dist = [
     { name = "experimaestro", specifier = "<=1.8.9" },
     { name = "experimaestro-ir", editable = "../experimaestro-ir" },
     { name = "faiss-cpu" },
-    { name = "ir-datasets", git = "https://github.com/MathVast/ir_datasets.git?branch=benjamin-version" },
+    { name = "ir-datasets", extras = ["ijson"], git = "https://github.com/MathVast/ir_datasets.git?branch=benjamin-version" },
     { name = "ir-measures", specifier = ">=0.3.7" },
     { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "numpy", specifier = "<2" },

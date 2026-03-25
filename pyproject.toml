@@ -9,7 +9,7 @@ dependencies = [
     "datamaestro-text>=2025.5.13",
     "experimaestro<=1.8.9",
     "experimaestro_ir",
-    "ir-datasets",
+    "ir-datasets[ijson]",
     "pandas>=2.3.1",
     "tensorboard",
     "torch<2.7.0",
