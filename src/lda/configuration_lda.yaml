@@ -24,7 +24,7 @@ gather_matrices:
   ]
   get_weak_negatives: true
   max_query_len: 6
-  generation_requirements: "duration=100h & cuda(mem=32G)"
+  generation_requirements: "duration=100h & cuda(mem=32G) & cpu(cores=40)"
   max_queries: 1000
 
 list_of_datasets: [

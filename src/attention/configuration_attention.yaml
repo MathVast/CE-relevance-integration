@@ -23,7 +23,7 @@ gather_matrices:
     {"dataset_name": "irds.beir.bioasq.test", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [1]},
   ]
   get_weak_negatives: true
-  generation_requirements: "duration=2 days & cuda(mem=12G) & cpu(cores=8)"
+  generation_requirements: "duration=2 days & cuda(mem=16G) & cpu(cores=40)"
   indexation_requirements: "duration=2 days & cpu(cores=4)"
   sampling_requirements: "duration=2 days & cpu(cores=4)"
   max_queries: 1000
