@@ -74,7 +74,7 @@ def get_interesting_modules(model) -> List[str]:
 
     :return List[str]: List of module names.
     """
-    interesting_layers = ["output.dense", "output.LayerNorm"]
+    interesting_layers = ["self.dropout", "intermediate.dense"]
     layer_names = list()
     for name, _ in model.named_modules():
         if any(word in name for word in interesting_layers):
