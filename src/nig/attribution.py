@@ -34,7 +34,7 @@ from nig.integrated_gradients import (
 
 import logging
 
-from utils import get_interesting_modules, get_token_types_spans
+from utils import get_interesting_modules_NIG, get_token_types_spans
 
 logging.basicConfig(level=logging.INFO)
 
@@ -67,7 +67,7 @@ def nig_infonce_full_model(
     :param int batch_size: Batch size used for each iteration (true number of steps is batch_size x num_reps).
     :return Dict: Attribution for each activation unit for each layer in the model.
     """
-    layer_names = get_interesting_modules(
+    layer_names = get_interesting_modules_NIG(
         model=cross_scorer.model,
     )
     product_storage = dict() 

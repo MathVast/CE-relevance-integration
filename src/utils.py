@@ -68,7 +68,7 @@ def get_token_types_spans(input, tokenizer) -> List[Tuple]:
     slices.append(slice(query_len + 2 + document_len, query_len + 2 + document_len + 1)) # The second SEP token
     return slices
 
-def get_interesting_modules(model) -> List[str]:
+def get_interesting_modules_NIG(model) -> List[str]:
     """
     Returns a list of the names of the interesting modules in the model.
 
@@ -81,6 +81,21 @@ def get_interesting_modules(model) -> List[str]:
             layer_names.append(name)
 
     return layer_names
+
+def get_interesting_modules_LDA(model) -> List[str]:
+    """
+    Returns a list of the names of the interesting modules in the model.
+
+    :return List[str]: List of module names.
+    """
+    interesting_layers = ["output.dense", "output.LayerNorm"]
+    layer_names = list()
+    for name, _ in model.named_modules():
+        if any(word in name for word in interesting_layers):
+            layer_names.append(name)
+
+    return layer_names
+
 
 def untuple(x):
     return x[0] if isinstance(x, tuple) else x

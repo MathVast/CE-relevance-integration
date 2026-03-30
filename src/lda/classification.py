@@ -22,7 +22,7 @@ from experimaestro import Task, Param, Config, Meta, Constant
 from experimaestro.generators import pathgenerator
 
 from lda.generate_data import AgregateMatricesOutput
-from utils import get_interesting_modules
+from utils import get_interesting_modules_LDA
 from extractors import OutputsExtractorWithResiduals
 from lda.utils import GetActivationsOutput, iterate_over_pairs_and_store_activations
 
@@ -73,7 +73,7 @@ class ComputeClassification(Task):
             activation_fct = lambda x, dim: F.softmax(x, dim=dim)
             target_position = 1
 
-        layer_names = get_interesting_modules(
+        layer_names = get_interesting_modules_LDA(
             model=model,
         )
 

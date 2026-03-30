@@ -20,7 +20,7 @@ from xpmir.rankers.standard import BM25
 from xpmir.papers.helpers.samplers import ValidationSample
 
 from sampling import DiversePassagesSamplerWithHardNegatives
-from utils import generic_dataset, check_pid_and_qid, get_token_types_spans, get_interesting_modules
+from utils import generic_dataset, check_pid_and_qid, get_token_types_spans, get_interesting_modules_LDA
 from extractors import OutputsExtractorWithResiduals
 from lda.config import LDAStudy
 import gzip
@@ -123,7 +123,7 @@ class GenerateMatrices(Task):
             activation_fct = lambda x, dim: F.softmax(x, dim=dim)
             target_position = 1
 
-        layer_names = get_interesting_modules(
+        layer_names = get_interesting_modules_LDA(
             model=model,
         )
 
@@ -331,7 +331,7 @@ class GenerateMatricesWeakNegatives(Task):
             activation_fct = lambda x, dim: F.softmax(x, dim=dim)
             target_position = 1
 
-        layer_names = get_interesting_modules(
+        layer_names = get_interesting_modules_LDA(
             model=model,
         )
 
