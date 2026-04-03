@@ -24,6 +24,7 @@ dependencies = [
     "pyserini==0.21.0",
     "faiss-cpu",
     "seaborn>=0.13.2",
+    "adjusttext>=1.3.0",
 ]
 
 [tool.uv]
