@@ -1,0 +1,26 @@
+id: attention_pattern_studies
+description: Study the attention patterns between passages and queries.
+
+module: attention.main
+
+gpu: true
+ranker_id: xpmir/cross-encoder-bert-base-infoNCE
+
+post_processing: 
+  requirements: "duration=24h & cpu(cores=8)"
+
+gather_matrices:
+  list_of_datasets: [
+    {"dataset_name": "irds.msmarco-passage.trec-dl-2019.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+    {"dataset_name": "irds.msmarco-passage.trec-dl-2020.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+    {"dataset_name": "irds.msmarco-passage-v2.trec-dl-2021.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+    {"dataset_name": "irds.msmarco-passage-v2.trec-dl-2022.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+  ]
+  get_weak_negatives: true
+  generation_requirements: "duration=2 days & cuda(mem=16G) & cpu(cores=40)"
+  indexation_requirements: "duration=2 days & cpu(cores=4)"
+  sampling_requirements: "duration=2 days & cpu(cores=4)"
+  max_queries: 1000
+
+start_layer: 0
+end_layer: 12
