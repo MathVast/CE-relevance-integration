@@ -1,0 +1,26 @@
+id: ablation_studies
+description: Configuration to control the ablation's experiments.
+
+module: ablations.main
+
+gpu: true
+ranker_id: xpmir/cross-encoder-bert-base-infoNCE
+
+post_processing: 
+  requirements: "duration=1 days & cpu(cores=8)"
+
+list_of_datasets: [
+  "irds.msmarco-passage.trec-dl-2019.judged",
+  "irds.msmarco-passage.trec-dl-2020.judged",
+  "irds.msmarco-passage-v2.trec-dl-2021.judged",
+  "irds.msmarco-passage-v2.trec-dl-2022.judged",
+]
+start_layer: 0
+end_layer: 12
+max_seq_length: 128
+top_k: 100
+max_queries_per_dataset: 1000
+ablation_requirements: "duration=100h & cuda(mem=16G)"
+
+
+

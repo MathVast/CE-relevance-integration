@@ -1,13 +1,13 @@
-id: attention_pattern_studies
-description: Study the attention patterns between passages and queries.
+id: lda_analysis
+description: Configuration to control only the lda analysis experiments.
 
-module: attention.main
+module: lda.main
 
 gpu: true
-ranker_id: xpmir/cross-encoder-bert-base-infoNCE
+ranker_id: xpmir/cross-encoder-bert-base-infoNCE # castorini/monobert-large-msmarco
 
 post_processing: 
-  requirements: "duration=24h & cpu(cores=8)"
+  requirements: "duration=48h & cpu(cores=32)"
 
 gather_matrices:
   list_of_datasets: [
@@ -19,10 +19,25 @@ gather_matrices:
     {"dataset_name": "irds.beir.bioasq.test", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [1]},
   ]
   get_weak_negatives: true
-  generation_requirements: "duration=2 days & cuda(mem=16G) & cpu(cores=40)"
-  indexation_requirements: "duration=2 days & cpu(cores=4)"
-  sampling_requirements: "duration=2 days & cpu(cores=4)"
+  max_query_len: 6
+  generation_requirements: "duration=10h & cuda(mem=12G) & cpu(cores=8)"
   max_queries: 1000
 
+list_of_datasets: [
+  {"dataset_name": "irds.beir.fiqa.test", "max_passages_per_query": 2},
+  {"dataset_name": "irds.beir.trec-covid", "max_passages_per_query": 2},
+  {"dataset_name": "irds.beir.nfcorpus.test", "max_passages_per_query": 2},
+  {"dataset_name": "irds.disks45.nocr.trec-robust-2004", "max_passages_per_query": 2},
+  {"dataset_name": "irds.dpr-w100.natural-questions.dev", "max_passages_per_query": 2},
+  {"dataset_name": "irds.beir.bioasq.test", "max_passages_per_query": 2},
+]
+target_modules: [
+    "attention.output.LayerNorm",
+    "output.dense",
+    "output.LayerNorm"
+]
 start_layer: 0
 end_layer: 12
+max_query_len: 6
+requirements: "duration=1d & cuda(mem=16G) & cpu(cores=40)"
+classification_requirements: "duration=6h & cpu(cores=32)"

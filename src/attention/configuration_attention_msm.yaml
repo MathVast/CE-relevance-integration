@@ -11,12 +11,10 @@ post_processing:
 
 gather_matrices:
   list_of_datasets: [
-    {"dataset_name": "irds.beir.fiqa.test", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [1]},
-    {"dataset_name": "irds.beir.trec-covid", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2]},
-    {"dataset_name": "irds.beir.nfcorpus.test", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2]},
-    {"dataset_name": "irds.disks45.nocr.trec-robust-2004", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [1,2]},
-    {"dataset_name": "irds.dpr-w100.natural-questions.dev", "max_passages_per_relevance_level": 2, "max_passages_per_query": 10, "relevance_levels": [2]}, # lot of queries there so we diminish all values
-    {"dataset_name": "irds.beir.bioasq.test", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [1]},
+    {"dataset_name": "irds.msmarco-passage.trec-dl-2019.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+    {"dataset_name": "irds.msmarco-passage.trec-dl-2020.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+    {"dataset_name": "irds.msmarco-passage-v2.trec-dl-2021.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+    {"dataset_name": "irds.msmarco-passage-v2.trec-dl-2022.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
   ]
   get_weak_negatives: true
   generation_requirements: "duration=2 days & cuda(mem=16G) & cpu(cores=40)"

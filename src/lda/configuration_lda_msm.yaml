@@ -1,0 +1,39 @@
+id: lda_analysis
+description: Configuration to control only the lda analysis experiments.
+
+module: lda.main
+
+gpu: true
+ranker_id: xpmir/cross-encoder-bert-base-infoNCE # castorini/monobert-large-msmarco
+
+post_processing: 
+  requirements: "duration=48h & cpu(cores=32)"
+
+gather_matrices:
+  list_of_datasets: [
+    {"dataset_name": "irds.msmarco-passage.trec-dl-2019.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+    {"dataset_name": "irds.msmarco-passage.trec-dl-2020.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+    {"dataset_name": "irds.msmarco-passage-v2.trec-dl-2021.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+    {"dataset_name": "irds.msmarco-passage-v2.trec-dl-2022.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+  ]
+  get_weak_negatives: true
+  max_query_len: 6
+  generation_requirements: "duration=10h & cuda(mem=12G) & cpu(cores=8)"
+  max_queries: 1000
+
+list_of_datasets: [
+  {"dataset_name": "irds.msmarco-passage.trec-dl-2019.judged", "max_passages_per_query": 2},
+  {"dataset_name": "irds.msmarco-passage.trec-dl-2020.judged", "max_passages_per_query": 2},
+  {"dataset_name": "irds.msmarco-passage-v2.trec-dl-2021.judged", "max_passages_per_query": 2},
+  {"dataset_name": "irds.msmarco-passage-v2.trec-dl-2022.judged", "max_passages_per_query": 2},
+]
+target_modules: [
+    "attention.output.LayerNorm",
+    "output.dense",
+    "output.LayerNorm"
+]
+start_layer: 0
+end_layer: 12
+max_query_len: 6
+requirements: "duration=1d & cuda(mem=16G) & cpu(cores=40)"
+classification_requirements: "duration=6h & cpu(cores=32)"

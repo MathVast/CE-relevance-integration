@@ -11,6 +11,10 @@ post_processing:
 
 gather_matrices:
   list_of_datasets: [
+    {"dataset_name": "irds.msmarco-passage.trec-dl-2019.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+    {"dataset_name": "irds.msmarco-passage.trec-dl-2020.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+    {"dataset_name": "irds.msmarco-passage-v2.trec-dl-2021.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
+    {"dataset_name": "irds.msmarco-passage-v2.trec-dl-2022.judged", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2,3]},
     {"dataset_name": "irds.beir.fiqa.test", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [1]},
     {"dataset_name": "irds.beir.trec-covid", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2]},
     {"dataset_name": "irds.beir.nfcorpus.test", "max_passages_per_relevance_level": 20, "max_passages_per_query": 100, "relevance_levels": [2]},
