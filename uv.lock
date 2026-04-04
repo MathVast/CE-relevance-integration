@@ -701,7 +701,8 @@ wheels = [
 
 [[package]]
 name = "experimaestro-ir"
-source = { editable = "../experimaestro-ir" }
+version = "0.0.0.dev838+g9255abad0"
+source = { git = "https://github.com/MathVast/experimaestro-ir.git?rev=fix%2Fcompat-import#9255abad0250873cdee3eae73b2fb35303b38bdb" }
 dependencies = [
     { name = "attrs" },
     { name = "datamaestro" },
@@ -714,51 +715,6 @@ dependencies = [
     { name = "omegaconf" },
     { name = "pytorch-lightning" },
     { name = "toma" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "attrs" },
-    { name = "datamaestro", specifier = ">=1.0.1" },
-    { name = "datamaestro-text", specifier = ">=2025.7.28" },
-    { name = "docstring-parser" },
-    { name = "experimaestro", specifier = ">=1.7.1" },
-    { name = "impact-index", specifier = "==0.27.*" },
-    { name = "ir-datasets" },
-    { name = "ir-measures", specifier = ">=0.3.3" },
-    { name = "omegaconf", specifier = ">=2.2" },
-    { name = "pyserini", marker = "extra == 'anserini'", specifier = ">=0.20.0" },
-    { name = "pytorch-lightning" },
-    { name = "sentence-transformers", marker = "extra == 'neural'" },
-    { name = "tensorboard", marker = "extra == 'neural'" },
-    { name = "toma" },
-    { name = "torch", marker = "extra == 'neural'", specifier = ">=1.12" },
-    { name = "transformers", marker = "extra == 'neural'" },
-]
-provides-extras = ["anserini", "neural"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "docutils", specifier = ">=0.21.2" },
-    { name = "pytest", specifier = ">=8.4.1" },
-]
-documentation = [
-    { name = "mock" },
-    { name = "myst-parser" },
-    { name = "sphinx", specifier = ">6" },
-    { name = "sphinx-rtd-theme", specifier = ">=3" },
-    { name = "sphinx-toolbox" },
-    { name = "sphobjinv" },
-]
-test = [
-    { name = "faiss-cpu" },
-    { name = "mock" },
-    { name = "myst-parser" },
-    { name = "pytest" },
-    { name = "sphinx", specifier = ">6" },
-    { name = "sphinx-rtd-theme", specifier = ">=3" },
-    { name = "sphinx-toolbox" },
-    { name = "sphobjinv" },
 ]
 
 [[package]]
@@ -2879,7 +2835,7 @@ requires-dist = [
     { name = "datamaestro", specifier = ">=1.4.2" },
     { name = "datamaestro-text", specifier = ">=2025.5.13" },
     { name = "experimaestro", specifier = "<=1.8.9" },
-    { name = "experimaestro-ir", editable = "../experimaestro-ir" },
+    { name = "experimaestro-ir", git = "https://github.com/MathVast/experimaestro-ir.git?rev=fix%2Fcompat-import" },
     { name = "faiss-cpu" },
     { name = "ir-datasets", extras = ["ijson"], git = "https://github.com/MathVast/ir_datasets.git?branch=benjamin-version" },
     { name = "ir-measures", specifier = ">=0.3.7" },

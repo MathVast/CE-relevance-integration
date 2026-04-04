@@ -36,7 +36,7 @@ override-dependencies = [
 
 [tool.uv.sources]
 ir-datasets = { git = "https://github.com/MathVast/ir_datasets.git", branch = "benjamin-version" }
-experimaestro-ir = { path = "../experimaestro-ir", editable = true }
+experimaestro-ir = { git = "https://github.com/MathVast/experimaestro-ir.git", rev = "fix/compat-import" }
 
 [dependency-groups]
 dev = [
