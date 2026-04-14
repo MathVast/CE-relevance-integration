@@ -1,7 +1,7 @@
 id: mask_learning
 description: Configuration to control the mask learning experiment.
 
-module: information_bottleneck.train
+module: information_bottleneck.test
 
 gpu: true
 ranker_id: xpmir/cross-encoder-bert-base-infoNCE
@@ -43,16 +43,16 @@ retrieval:
   k: 100
 
 test_datasets: [
-  "irds.msmarco-passage.trec-dl-2019.judged",
-  "irds.msmarco-passage.trec-dl-2020.judged",
+  # "irds.msmarco-passage.trec-dl-2019.judged",
+  # "irds.msmarco-passage.trec-dl-2020.judged",
   "irds.msmarco-passage-v2.trec-dl-2021.judged",
   "irds.msmarco-passage-v2.trec-dl-2022.judged",
-  "irds.beir.fiqa.test", 
-  "irds.beir.trec-covid",
-  "irds.beir.nfcorpus.test", 
-  "irds.disks45.nocr.trec-robust-2004", 
+  # "irds.beir.fiqa.test", 
+  # "irds.beir.trec-covid",
+  # "irds.beir.nfcorpus.test", 
+  # "irds.disks45.nocr.trec-robust-2004", 
   "irds.dpr-w100.natural-questions.dev", 
-  "irds.beir.bioasq.test", 
+  # "irds.beir.bioasq.test", 
 ]
-suffix: "monobert-base_masks-v2.pth"
-test_requirements: "duration=100h & cuda(mem=32G)"
+suffix: "monobert_base_masks.pth"
+test_requirements: "duration=48h & cuda(mem=32G)"

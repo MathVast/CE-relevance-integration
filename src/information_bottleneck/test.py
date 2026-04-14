@@ -41,7 +41,7 @@ def run(
 
     MASKING_STRATEGY = "gumbel_softmax"
     
-    mask_folder = Path("/home/vast/relevance-integration/masks_target_folder/")
+    mask_folder = Path("./src/information_bottleneck/masks/")
     for mask_file in mask_folder.rglob(cfg.suffix):
         for test_dataset in cfg.test_datasets:
             logging.info(f"Testing mask {cfg.suffix} on dataset {test_dataset}.")
