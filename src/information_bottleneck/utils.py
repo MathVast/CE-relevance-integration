@@ -564,7 +564,7 @@ class AdvancedAblationTestFromPath(Task):
     output_path: Annotated[Path, pathgenerator("output")]
 
     def task_outputs(self, dep: Callable[[Config], None]) -> AblationOutput:
-        return dep(AblationOutput.C(task=self.C()))
+        return dep(AblationOutput.C(task=self))
 
     def execute(self):
         parsed_dataset_with_qrels = get_relevance_levels(self.dataset_name, self.parsed_dataset)
