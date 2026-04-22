@@ -1,5 +1,5 @@
 from .utils import AblationOutput, AgregationOutput
-
+from datamaestro import prepare_dataset
 import csv
 import os
 import json
@@ -7,7 +7,7 @@ from typing import Callable, Dict, List, Annotated
 import numpy as np
 import pandas as pd
 from sklearn.metrics import ndcg_score
-from experimaestro import Task, Param, Config
+from experimaestro import Task, Param, Config, Constant
 from experimaestro.generators import pathgenerator
 from pathlib import Path
 import ir_measures
@@ -32,14 +32,20 @@ class AgregationAblations(Task):
 
     storage_path: Annotated[Path, pathgenerator("storage")]
 
+    dataset_name: Param[str]
+
     def task_outputs(self, dep: Callable[[Config], None]) -> AgregationOutput:
         return dep(AgregationOutput.C(task=self))
 
     def execute(self):
+        assessments = prepare_dataset(self.dataset_name).assessments
+        qrels = {
+            assessedTopic.topic_id: {r.doc_id: r.rel for r in assessedTopic.assessments}
+            for assessedTopic in assessments.iter()
+        }
         agregation_results = dict()
         original_results_per_query = dict()
         ablated_results_per_direction_per_query = dict()
-        qrels = dict()
         
         for ablation_output in self.ablations_output:
             hash_id = str(ablation_output.task.output_path).split("/")[-2]
@@ -66,12 +72,10 @@ class AgregationAblations(Task):
 
                         if dico["query_id"] not in ablated_results_per_direction_per_query[key].keys():
                             ablated_results_per_direction_per_query[key][dico["query_id"]] = dict()
-                        ablated_results_per_direction_per_query[key][dico["query_id"]][dico["passage_id"]] = float(dico["ablation_proba"])
+                        ablated_results_per_direction_per_query[key][dico["query_id"]][dico["passage_id"]] = float(dico["ablation_logits"][0][0])
                         if dico["query_id"] not in original_results_per_query.keys():
                             original_results_per_query[dico["query_id"]] = dict()
-                            qrels[dico["query_id"]] = dict() 
-                        original_results_per_query[dico["query_id"]][dico["passage_id"]] = float(dico["original_proba"])
-                        qrels[dico["query_id"]][dico["passage_id"]] = dico["passage_relevance"] 
+                        original_results_per_query[dico["query_id"]][dico["passage_id"]] = float(dico["original_logits"][0][0])
 
             elif Path(f"{ablation_output.task.output_path}/ablation_logs.npy").exists(): 
                 logging.info(f"Processing logs for {key} from {ablation_output.task.output_path}/ablation_logs.npy")
@@ -82,12 +86,10 @@ class AgregationAblations(Task):
 
                     if dico["query_id"] not in ablated_results_per_direction_per_query[key].keys():
                         ablated_results_per_direction_per_query[key][dico["query_id"]] = dict()
-                    ablated_results_per_direction_per_query[key][dico["query_id"]][dico["passage_id"]] = float(dico["ablation_proba"])
+                    ablated_results_per_direction_per_query[key][dico["query_id"]][dico["passage_id"]] = float(dico["ablation_logits"][0][0])
                     if dico["query_id"] not in original_results_per_query.keys():
                         original_results_per_query[dico["query_id"]] = dict()
-                        qrels[dico["query_id"]] = dict() 
-                    original_results_per_query[dico["query_id"]][dico["passage_id"]] = float(dico["original_proba"])
-                    qrels[dico["query_id"]][dico["passage_id"]] = dico["passage_relevance"]     
+                    original_results_per_query[dico["query_id"]][dico["passage_id"]] = float(dico["original_logits"][0][0])
             else:
                 raise ValueError(f"No logs found for {key} in {ablation_output.task.output_path}.")
 

@@ -175,30 +175,37 @@ def run(
 
         # We agregate PER DATASET first
         cls_agregation_outputs[dataset_name] = AgregationAblations.C(
+            dataset_name=dataset_name,
             ablations_output=cls_ablations_outputs
         ).submit(launcher=agregation_launcher)
 
         cls_to_query_doc_agregation_outputs[dataset_name] = AgregationAblations.C(
+            dataset_name=dataset_name,
             ablations_output=cls_to_query_doc_ablations_outputs
         ).submit(launcher=agregation_launcher)
 
         doc_agregation_outputs[dataset_name] = AgregationAblations.C(
+            dataset_name=dataset_name,
             ablations_output=doc_ablation_outputs
         ).submit(launcher=agregation_launcher)
 
         doc_query_to_doc_query_agregation_outputs[dataset_name] = AgregationAblations.C(
+            dataset_name=dataset_name,
             ablations_output=doc_query_to_doc_query_ablations_outputs
         ).submit(launcher=agregation_launcher)
 
         cls_to_query_doc_sep_agregation_outputs[dataset_name] = AgregationAblations.C(
+            dataset_name=dataset_name,
             ablations_output=cls_to_query_doc_sep_ablations_outputs
         ).submit(launcher=agregation_launcher)
 
         cls_to_query_doc_both_sep_agregation_outputs[dataset_name] = AgregationAblations.C(
+            dataset_name=dataset_name,
             ablations_output=cls_to_query_doc_both_sep_ablations_outputs
         ).submit(launcher=agregation_launcher)
 
         no_interaction_agregation_outputs[dataset_name] = AgregationAblations.C(
+            dataset_name=dataset_name,
             ablations_output=no_interaction_ablations_outputs
         ).submit(launcher=agregation_launcher)
 
