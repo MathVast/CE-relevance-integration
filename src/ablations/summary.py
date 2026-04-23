@@ -34,15 +34,18 @@ class AgregationAblations(Task):
 
     dataset_name: Param[str]
 
+    target_label: Param[int]
+
     def task_outputs(self, dep: Callable[[Config], None]) -> AgregationOutput:
         return dep(AgregationOutput.C(task=self))
 
     def execute(self):
         assessments = prepare_dataset(self.dataset_name).assessments
-        qrels = {
+        base_qrels = {
             assessedTopic.topic_id: {r.doc_id: r.rel for r in assessedTopic.assessments}
             for assessedTopic in assessments.iter()
         }
+        target_qrels = {}
         agregation_results = dict()
         original_results_per_query = dict()
         ablated_results_per_direction_per_query = dict()
@@ -72,10 +75,11 @@ class AgregationAblations(Task):
 
                         if dico["query_id"] not in ablated_results_per_direction_per_query[key].keys():
                             ablated_results_per_direction_per_query[key][dico["query_id"]] = dict()
-                        ablated_results_per_direction_per_query[key][dico["query_id"]][dico["passage_id"]] = float(dico["ablation_logits"][0][0])
+                        ablated_results_per_direction_per_query[key][dico["query_id"]][dico["passage_id"]] = float(dico["ablation_logits"][0][self.target_label])
                         if dico["query_id"] not in original_results_per_query.keys():
                             original_results_per_query[dico["query_id"]] = dict()
-                        original_results_per_query[dico["query_id"]][dico["passage_id"]] = float(dico["original_logits"][0][0])
+                        original_results_per_query[dico["query_id"]][dico["passage_id"]] = float(dico["original_logits"][0][self.target_label])
+                        target_qrels[dico["query_id"]] = base_qrels[dico["query_id"]]
 
             elif Path(f"{ablation_output.task.output_path}/ablation_logs.npy").exists(): 
                 logging.info(f"Processing logs for {key} from {ablation_output.task.output_path}/ablation_logs.npy")
@@ -86,42 +90,29 @@ class AgregationAblations(Task):
 
                     if dico["query_id"] not in ablated_results_per_direction_per_query[key].keys():
                         ablated_results_per_direction_per_query[key][dico["query_id"]] = dict()
-                    ablated_results_per_direction_per_query[key][dico["query_id"]][dico["passage_id"]] = float(dico["ablation_logits"][0][0])
+                    ablated_results_per_direction_per_query[key][dico["query_id"]][dico["passage_id"]] = float(dico["ablation_logits"][0][self.target_label])
                     if dico["query_id"] not in original_results_per_query.keys():
                         original_results_per_query[dico["query_id"]] = dict()
-                    original_results_per_query[dico["query_id"]][dico["passage_id"]] = float(dico["original_logits"][0][0])
+                    original_results_per_query[dico["query_id"]][dico["passage_id"]] = float(dico["original_logits"][0][self.target_label])
+                    target_qrels[dico["query_id"]] = base_qrels[dico["query_id"]]
             else:
                 raise ValueError(f"No logs found for {key} in {ablation_output.task.output_path}.")
 
-        base_run_metrics_per_qid = {"ndcg": {m.query_id: m.value for m in ir_measures.iter_calc([nDCG@10], qrels, original_results_per_query)}}
-        base_run_metrics = ir_measures.calc_aggregate([nDCG@10], qrels, original_results_per_query)
+        base_run_metrics_per_qid = {"ndcg": {m.query_id: m.value for m in ir_measures.iter_calc([nDCG@10], target_qrels, original_results_per_query)}}
+        base_run_metrics = ir_measures.calc_aggregate([nDCG@10], target_qrels, original_results_per_query)
 
         ablated_run_metrics_per_direction_per_qid = dict()
         ablated_run_metrics_per_direction= dict()
         ndcg_p_value_per_direction = dict()
         for direction in ablated_results_per_direction_per_query.keys():
-            queries = list(qrels.keys())
-            documents = list({doc for query in qrels for doc in qrels[query]})
-
-            qrels_scores = np.array([
-                [qrels[query].get(doc, 0) for doc in documents]
-                for query in queries
-            ])
-            runs = np.array([
-                [ablated_results_per_direction_per_query[direction][query].get(doc, 0) for doc in documents]
-                for query in queries
-            ])
             # Compute NDCG scores for each query
-            ndcg_scores = []
-            for qrel_score, single_run in zip(qrels_scores, runs):
-                ndcg_scores.append(ndcg_score([qrel_score], [single_run], k=10, ignore_ties=False))
+            ablated_run_metrics_per_direction_per_qid[direction] = {"ndcg": {m.query_id: m.value for m in ir_measures.iter_calc([nDCG@10], target_qrels, ablated_results_per_direction_per_query[direction])}}
 
-            ablated_run_metrics_per_direction_per_qid[direction] = {"ndcg": {query: score for query, score in zip(queries, ndcg_scores)}}
-            ablated_run_metrics_per_direction[direction] = ndcg_score(qrels_scores, runs, k=10, ignore_ties=False)
+            ablated_run_metrics_per_direction[direction] = ir_measures.calc_aggregate([nDCG@10], target_qrels, ablated_results_per_direction_per_query[direction])
 
             ndcg_t_statistic, ndcg_p_value = stats.ttest_ind(
-                [base_run_metrics_per_qid["ndcg"][v] for v in qrels.keys()], 
-                [ablated_run_metrics_per_direction_per_qid[direction]["ndcg"][v] for v in qrels.keys()]
+                [base_run_metrics_per_qid["ndcg"][v] for v in target_qrels.keys()], 
+                [ablated_run_metrics_per_direction_per_qid[direction]["ndcg"][v] for v in target_qrels.keys()]
             )
             ndcg_p_value_per_direction[direction] = ndcg_p_value
                 

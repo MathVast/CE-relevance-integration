@@ -13,6 +13,7 @@ from xpmir.rankers.standard import BM25
 from functools import partial
 import xpmir.interfaces.anserini as anserini
 from xpmir.papers.helpers.samplers import ValidationSample
+from transformers import AutoConfig
 
 
 import logging
@@ -33,6 +34,13 @@ def run(
     agregation_launcher = find_launcher(cfg.post_processing.requirements)
 
     basemodel = BM25.C()
+
+    config = AutoConfig.from_pretrained(cfg.ranker_id)
+    if config.num_labels == 1:
+        target_position = 0
+    else:
+        target_position = 1
+
 
     retriever = partial(
         anserini.retriever,
@@ -176,36 +184,43 @@ def run(
         # We agregate PER DATASET first
         cls_agregation_outputs[dataset_name] = AgregationAblations.C(
             dataset_name=dataset_name,
+            target_label=target_position,
             ablations_output=cls_ablations_outputs
         ).submit(launcher=agregation_launcher)
 
         cls_to_query_doc_agregation_outputs[dataset_name] = AgregationAblations.C(
             dataset_name=dataset_name,
+            target_label=target_position,
             ablations_output=cls_to_query_doc_ablations_outputs
         ).submit(launcher=agregation_launcher)
 
         doc_agregation_outputs[dataset_name] = AgregationAblations.C(
             dataset_name=dataset_name,
+            target_label=target_position,
             ablations_output=doc_ablation_outputs
         ).submit(launcher=agregation_launcher)
 
         doc_query_to_doc_query_agregation_outputs[dataset_name] = AgregationAblations.C(
             dataset_name=dataset_name,
+            target_label=target_position,
             ablations_output=doc_query_to_doc_query_ablations_outputs
         ).submit(launcher=agregation_launcher)
 
         cls_to_query_doc_sep_agregation_outputs[dataset_name] = AgregationAblations.C(
             dataset_name=dataset_name,
+            target_label=target_position,
             ablations_output=cls_to_query_doc_sep_ablations_outputs
         ).submit(launcher=agregation_launcher)
 
         cls_to_query_doc_both_sep_agregation_outputs[dataset_name] = AgregationAblations.C(
             dataset_name=dataset_name,
+            target_label=target_position,
             ablations_output=cls_to_query_doc_both_sep_ablations_outputs
         ).submit(launcher=agregation_launcher)
 
         no_interaction_agregation_outputs[dataset_name] = AgregationAblations.C(
             dataset_name=dataset_name,
+            target_label=target_position,
             ablations_output=no_interaction_ablations_outputs
         ).submit(launcher=agregation_launcher)
 
