@@ -6,10 +6,11 @@ import torch
 from typing import Annotated, Callable, Optional
 
 from utils import get_relevance_levels, untuple
-from experimaestro import Task, Param, Config, Meta, Annotated, pathgenerator
+from experimaestro import Task, Param, Config, Meta, Annotated, pathgenerator, Constant
 from experimaestro.generators import pathgenerator
 from pathlib import Path
 
+from datamaestro import prepare_dataset
 from datamaestro_text.data.ir import PairwiseSampleDataset
 
 import logging
@@ -74,26 +75,33 @@ class PerspectiveAblationStudy(Task):
 
     storage_path: Annotated[Path, pathgenerator("storage")]
 
+    version: Constant[int] = 2
+
     def execute(self):
         shift = 1 # Make the shift parametrizable in case we want to consider the easy negatives
 
         logging.info("Get all qrels.")
-        dict_qrels = get_relevance_levels(self.dataset_name, self.parsed_dataset)
-        
+        assessments = prepare_dataset(self.dataset_name).assessments
+        base_qrels = {
+            assessedTopic.topic_id: {r.doc_id: r.rel for r in assessedTopic.assessments}
+            for assessedTopic in assessments.iter()
+        }
+        target_qrels = {}
         logging.info("Computing the worst possible ranking.")
         worst_ranking = dict()
-        for query_id in dict_qrels.keys():
+        for query_id in base_qrels.keys():
             worst_ranking[query_id] = dict()
-            for doc_id, relevance in dict_qrels[query_id].items():
+            for doc_id, relevance in base_qrels[query_id].items():
                 worst_ranking[query_id][doc_id] = 1 / (relevance + shift)
+            target_qrels[query_id] = base_qrels[query_id]
 
-        queries = list(dict_qrels.keys())
-        documents = list({doc for query in dict_qrels for doc in dict_qrels[query]})
-
+        queries = list(base_qrels.keys())
+        documents = list({doc for query in target_qrels for doc in target_qrels[query]})
+        
         qrels_scores = np.array([
-            [dict_qrels[query].get(doc, 0) for doc in documents]
-            for query in queries
-        ])
+                    [target_qrels[query].get(doc, 0) for doc in documents]
+                    for query in queries
+                ])
         # Gather worst rankings
         worst_ranking_per_query = np.array([
             [worst_ranking[query].get(doc, 0) for doc in documents]
@@ -104,9 +112,9 @@ class PerspectiveAblationStudy(Task):
 
         logging.info("Computing random rankings.")
         random_ranking = dict()
-        for query_id in dict_qrels.keys():
+        for query_id in target_qrels.keys():
             random_ranking[query_id] = dict()
-            for doc_id, relevance in dict_qrels[query_id].items():
+            for doc_id, relevance in target_qrels[query_id].items():
                 random_ranking[query_id][doc_id] = 1.0
 
         # Gather random rankings
