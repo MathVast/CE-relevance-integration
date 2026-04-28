@@ -112,4 +112,4 @@ class PerspectiveAblationStudy(Task):
         pd.DataFrame.from_dict(data=random_metric, orient='index').to_csv(f"{self.storage_path}/random_results.csv", header=True)
         pd.DataFrame.from_dict(data=worst_metric, orient='index').to_csv(f"{self.storage_path}/worst_results.csv", header=True)
 
-        logging.info(f"Dataset: {self.dataset_name} - Worst ranking nDCG@10: {worst_metric['nDCG@10']:.2f} - Random ranking nDCG@10: {random_metric['nDCG@10']:.2f}")
+        logging.info(f"Dataset: {self.dataset_name} - Worst ranking nDCG@10: {worst_metric[nDCG@10]:.2f} - Random ranking nDCG@10: {random_metric[nDCG@10]:.2f}")
