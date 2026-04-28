@@ -54,5 +54,6 @@ test_datasets: [
   "irds.dpr-w100.natural-questions.dev", 
   "irds.beir.bioasq.test", 
 ]
+test_threshold: 0.99
 suffix: "monobert_masks.pth"
 test_requirements: "duration=24h & cuda(mem=24G)"
