@@ -1,4 +1,7 @@
+from collections import defaultdict
 import os
+from ir_measures import nDCG
+import ir_measures
 import numpy as np
 import pandas as pd
 from sklearn.metrics import ndcg_score
@@ -75,50 +78,34 @@ class PerspectiveAblationStudy(Task):
 
     storage_path: Annotated[Path, pathgenerator("storage")]
 
-    version: Constant[int] = 6
+    version: Constant[int] = 7
 
     def execute(self):
         logging.info("Get all qrels.")
         dict_qrels = get_relevance_levels(self.dataset_name, self.parsed_dataset)
 
         logging.info("Computing the worst possible ranking.")
-        worst_ndcg_scores = []
+        worst_results_per_query = {}
         for query_id, doc_rels in dict_qrels.items():
-            rel = np.array(list(doc_rels.values()))
+            worst_results_per_query[query_id] = {doc_id: 1.0 / (rel + 1) + np.random.uniform(0, 1e-9) for doc_id, rel in doc_rels.items()}
+        # worst_ndcg_score_per_query = {"ndcg": {m.query_id: m.value for m in ir_measures.iter_calc([nDCG@10], dict_qrels, worst_results_per_query)}}
+        worst_metric = ir_measures.calc_aggregate([nDCG@10], dict_qrels, worst_results_per_query)
 
-            # Shift relevances to be non-negative (required by sklearn)
-            rel_shifted = rel - rel.min() if rel.min() < 0 else rel
-            
-            # Worst ranking score: invert so most relevant docs get lowest score
-            # Add 1 to avoid division by zero after shifting (min is now 0)
-            worst_scores = 1.0 / (rel_shifted + 1)
-            if len(worst_scores) < 2:
-                score = 0.0 if rel_shifted[0] == 0 else 1.0
-            else:
-                score = ndcg_score([rel_shifted], [worst_scores], k=10, ignore_ties=False)
-            worst_ndcg_scores.append(score)
-
-        worst_metric = {"nDCG@10": np.mean(worst_ndcg_scores)}
-
-        
         logging.info("Computing random rankings.")
         N_RUNS = 1000
-        random_ndcg_scores = []
-        for query_id, doc_rels in dict_qrels.items():
-            rel = np.array(list(doc_rels.values()))
-            
-            # Shift relevances to be non-negative (required by sklearn)
-            rel_shifted = rel - rel.min() if rel.min() < 0 else rel
-            run_scores = []
-            for _ in range(N_RUNS):
-                if len(rel) < 2:
-                    run_scores.append(0.0) if rel_shifted[0] == 0 else run_scores.append(1.0)
-                else:
-                    random_scores = np.random.permutation(len(rel)).astype(float)
-                    run_scores.append(ndcg_score([rel_shifted], [random_scores], k=10, ignore_ties=False))
-            
-            random_ndcg_scores.append(np.mean(run_scores))
-        random_metric = {"nDCG@10": np.mean(random_ndcg_scores)}
+        random_ndcg_per_query = defaultdict(list)
+
+        for _ in range(N_RUNS):
+            random_results_per_query = {
+                query_id: {doc_id: np.random.uniform(0, 1) for doc_id in doc_rels}
+                for query_id, doc_rels in dict_qrels.items()
+            }
+            for m in ir_measures.iter_calc([nDCG@10], dict_qrels, random_results_per_query):
+                random_ndcg_per_query[m.query_id].append(m.value)
+
+        # Average per-query scores across runs
+        random_ndcg_score_per_query = {"ndcg": {query_id: np.mean(scores) for query_id, scores in random_ndcg_per_query.items()}}
+        random_metric = {nDCG@10: np.mean(list(random_ndcg_score_per_query["ndcg"].values()))}
 
         if not self.storage_path.exists():
             os.mkdir(self.storage_path)

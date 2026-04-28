@@ -36,7 +36,7 @@ class AgregationAblations(Task):
 
     target_label: Param[int]
 
-    version: Constant[int] = 2
+    version: Constant[int] = 3
 
     def task_outputs(self, dep: Callable[[Config], None]) -> AgregationOutput:
         return dep(AgregationOutput.C(task=self))
@@ -51,7 +51,6 @@ class AgregationAblations(Task):
         agregation_results = dict()
         original_results_per_query = dict()
         ablated_results_per_direction_per_query = dict()
-        
         for ablation_output in self.ablations_output:
             hash_id = str(ablation_output.task.output_path).split("/")[-2]
             ablation_results = np.load(f"{ablation_output.task.output_path}/averaged_diff.npy")
@@ -107,25 +106,8 @@ class AgregationAblations(Task):
         ablated_run_metrics_per_direction= dict()
         ndcg_p_value_per_direction = dict()
         for direction in ablated_results_per_direction_per_query.keys():
-            queries = list(target_qrels.keys())
-            documents = list({doc for query in target_qrels for doc in target_qrels[query]})
-
-            qrels_scores = np.array([
-                [target_qrels[query].get(doc, 0) for doc in documents]
-                for query in queries
-            ])
-            runs = np.array([
-                [ablated_results_per_direction_per_query[direction][query].get(doc, 0) for doc in documents]
-                for query in queries
-            ])
-            # Compute NDCG scores for each query
-            ndcg_scores = []
-            for qrel_score, single_run in zip(qrels_scores, runs):
-                ndcg_scores.append(ndcg_score([qrel_score], [single_run], k=10, ignore_ties=False))
-
-            # Compute NDCG scores for each query
-            ablated_run_metrics_per_direction_per_qid[direction] = {"ndcg": {query: score for query, score in zip(queries, ndcg_scores)}}
-            ablated_run_metrics_per_direction[direction] = ndcg_score(qrels_scores, runs, k=10, ignore_ties=False)
+            ablated_run_metrics_per_direction_per_qid[direction] = {"ndcg": {m.query_id: m.value for m in ir_measures.iter_calc([nDCG@10], target_qrels, ablated_results_per_direction_per_query[direction])}}
+            ablated_run_metrics_per_direction[direction] = ir_measures.calc_aggregate([nDCG@10], target_qrels, ablated_results_per_direction_per_query[direction])
 
             ndcg_t_statistic, ndcg_p_value = stats.ttest_ind(
                 [base_run_metrics_per_qid["ndcg"][v] for v in target_qrels.keys()], 
