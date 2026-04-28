@@ -75,57 +75,54 @@ class PerspectiveAblationStudy(Task):
 
     storage_path: Annotated[Path, pathgenerator("storage")]
 
-    version: Constant[int] = 2
+    version: Constant[int] = 6
 
     def execute(self):
-        shift = 1 # Make the shift parametrizable in case we want to consider the easy negatives
-
         logging.info("Get all qrels.")
-        assessments = prepare_dataset(self.dataset_name).assessments
-        base_qrels = {
-            assessedTopic.topic_id: {r.doc_id: r.rel for r in assessedTopic.assessments}
-            for assessedTopic in assessments.iter()
-        }
-        target_qrels = {}
+        dict_qrels = get_relevance_levels(self.dataset_name, self.parsed_dataset)
+
         logging.info("Computing the worst possible ranking.")
-        worst_ranking = dict()
-        for query_id in base_qrels.keys():
-            worst_ranking[query_id] = dict()
-            for doc_id, relevance in base_qrels[query_id].items():
-                worst_ranking[query_id][doc_id] = 1 / (relevance + shift)
-            target_qrels[query_id] = base_qrels[query_id]
+        worst_ndcg_scores = []
+        for query_id, doc_rels in dict_qrels.items():
+            rel = np.array(list(doc_rels.values()))
 
-        queries = list(base_qrels.keys())
-        documents = list({doc for query in target_qrels for doc in target_qrels[query]})
+            # Shift relevances to be non-negative (required by sklearn)
+            rel_shifted = rel - rel.min() if rel.min() < 0 else rel
+            
+            # Worst ranking score: invert so most relevant docs get lowest score
+            # Add 1 to avoid division by zero after shifting (min is now 0)
+            worst_scores = 1.0 / (rel_shifted + 1)
+            if len(worst_scores) < 2:
+                score = 0.0 if rel_shifted[0] == 0 else 1.0
+            else:
+                score = ndcg_score([rel_shifted], [worst_scores], k=10, ignore_ties=False)
+            worst_ndcg_scores.append(score)
+
+        worst_metric = {"nDCG@10": np.mean(worst_ndcg_scores)}
+
         
-        qrels_scores = np.array([
-                    [target_qrels[query].get(doc, 0) for doc in documents]
-                    for query in queries
-                ])
-        # Gather worst rankings
-        worst_ranking_per_query = np.array([
-            [worst_ranking[query].get(doc, 0) for doc in documents]
-            for query in queries
-        ])
-        # Compute NDCG scores for each query
-        worst_metric = {"nDCG@10": ndcg_score(qrels_scores, worst_ranking_per_query, k=10, ignore_ties=False)}
-
         logging.info("Computing random rankings.")
-        random_ranking = dict()
-        for query_id in target_qrels.keys():
-            random_ranking[query_id] = dict()
-            for doc_id, relevance in target_qrels[query_id].items():
-                random_ranking[query_id][doc_id] = 1.0
-
-        # Gather random rankings
-        random_ranking_per_query = np.array([
-            [random_ranking[query].get(doc, 0) for doc in documents]
-            for query in queries
-        ])
-        # Compute NDCG scores for each query
-        random_metric = {"nDCG@10": ndcg_score(qrels_scores, random_ranking_per_query, k=10, ignore_ties=False)}
+        N_RUNS = 1000
+        random_ndcg_scores = []
+        for query_id, doc_rels in dict_qrels.items():
+            rel = np.array(list(doc_rels.values()))
+            
+            # Shift relevances to be non-negative (required by sklearn)
+            rel_shifted = rel - rel.min() if rel.min() < 0 else rel
+            run_scores = []
+            for _ in range(N_RUNS):
+                if len(rel) < 2:
+                    run_scores.append(0.0) if rel_shifted[0] == 0 else run_scores.append(1.0)
+                else:
+                    random_scores = np.random.permutation(len(rel)).astype(float)
+                    run_scores.append(ndcg_score([rel_shifted], [random_scores], k=10, ignore_ties=False))
+            
+            random_ndcg_scores.append(np.mean(run_scores))
+        random_metric = {"nDCG@10": np.mean(random_ndcg_scores)}
 
         if not self.storage_path.exists():
             os.mkdir(self.storage_path)
         pd.DataFrame.from_dict(data=random_metric, orient='index').to_csv(f"{self.storage_path}/random_results.csv", header=True)
         pd.DataFrame.from_dict(data=worst_metric, orient='index').to_csv(f"{self.storage_path}/worst_results.csv", header=True)
+
+        logging.info(f"Dataset: {self.dataset_name} - Worst ranking nDCG@10: {worst_metric['nDCG@10']:.2f} - Random ranking nDCG@10: {random_metric['nDCG@10']:.2f}")
