@@ -14,6 +14,8 @@ from xpmir.papers.helpers.samplers import ValidationSample
 from xpmir.rankers.standard import BM25
 import xpmir.interfaces.anserini as anserini
 
+from transformers import BertConfig
+
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -38,6 +40,12 @@ def run(
         anserini.index_builder(launcher=launcher_index),
         model=basemodel,
     )
+
+    config = BertConfig.from_pretrained(cfg.ranker_id)
+    if config.num_labels == 1:
+        target_label = 0
+    else:
+        target_label = 1
 
     MASKING_STRATEGY = "gumbel_softmax"
     
@@ -72,4 +80,5 @@ def run(
 
     AgregationAdvancedAblationTests.C(
         advanced_ablation_outputs=advanced_test_outputs,
+        target_label=target_label,
     ).submit(launcher=agregation_launcher)
